@@ -89,7 +89,7 @@ router.post("/", requireAuth, async (req, res) => {
     const orderResult = await pool.query(
       `INSERT INTO orders (user_id, delivery_place, delivery_fee, total_price, status)
        VALUES ($1, $2, $3, $4, 'pending') RETURNING *`,
-      [req.user.id, delivery_place, delivery_fee, totalPrice]
+      [req.user.id, delivery_place, delivery_fee || 0, totalPrice]
     );
 
     const order = orderResult.rows[0];
@@ -98,14 +98,17 @@ router.post("/", requireAuth, async (req, res) => {
     const orderItemsPromises = items.map((item) =>
       pool.query(
         `INSERT INTO order_items (order_id, product_id, quantity, unit_price)
-         VALUES ($1, $2, $3, $4)`,
-        [order.id, item.product_id, item.quantity || 1, Number(item.unit_price)]
+         VALUES ($1, $2, $3, $4) RETURNING *`,
+        [order.id, item.product_id, item.quantity || 1, Number(item.unit_price).toFixed(2)]
       )
     );
 
-    await Promise.all(orderItemsPromises);
+    const insertedItems = (await Promise.all(orderItemsPromises)).map((r) => r.rows[0]);
 
-    res.status(201).json({ msg: "Order created successfully", order });
+    res.status(201).json({
+      msg: "Order created successfully",
+      order: { ...order, items: insertedItems },
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ msg: err.message });

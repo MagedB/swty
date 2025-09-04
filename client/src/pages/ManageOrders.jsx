@@ -65,7 +65,7 @@ export default function ManageOrders() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ deliveryPlace: newDeliveryPlace }),
+        body: JSON.stringify({ delivery_place: newDeliveryPlace }),
       });
       if (!res.ok) throw new Error("Failed to update order");
       fetchOrders();
@@ -76,7 +76,7 @@ export default function ManageOrders() {
   };
 
   return (
-    <div style={{ maxWidth: "900px", margin: "50px auto" }}>
+    <div style={{ maxWidth: "1000px", margin: "50px auto" }}>
       <h1>Manage Orders</h1>
       {msg && <p>{msg}</p>}
       <table border="1" cellPadding="5" cellSpacing="0" width="100%">
@@ -87,6 +87,7 @@ export default function ManageOrders() {
             <th>Phone</th>
             <th>Order Items</th>
             <th>Delivery Place</th>
+            <th>Items Total</th> {/* ✅ new column */}
             <th>Delivery Fee</th>
             <th>Total</th>
             <th>Actions</th>
@@ -97,7 +98,7 @@ export default function ManageOrders() {
             const user = order.user || {};
             const items = order.items || [];
             const itemsTotal = items.reduce(
-              (sum, item) => sum + Number(item.price) * (item.quantity || 1),
+              (sum, item) => sum + Number(item.unit_price) * (item.quantity || 1),
               0
             );
             const total = itemsTotal + Number(order.delivery_fee || 0);
@@ -112,7 +113,8 @@ export default function ManageOrders() {
                     {items.length > 0 ? (
                       items.map((item) => (
                         <li key={item.id}>
-                          {item.name} x {item.quantity || 1} (${item.price})
+                          {item.name} x {item.quantity || 1} ($
+                          {Number(item.unit_price).toFixed(2)})
                         </li>
                       ))
                     ) : (
@@ -121,7 +123,8 @@ export default function ManageOrders() {
                   </ul>
                 </td>
                 <td>{order.delivery_place || "N/A"}</td>
-                <td>${order.delivery_fee || 0}</td>
+                <td>${itemsTotal.toFixed(2)}</td> {/* ✅ show Items Total */}
+                <td>${Number(order.delivery_fee || 0).toFixed(2)}</td>
                 <td>${total.toFixed(2)}</td>
                 <td>
                   <button onClick={() => handleEdit(order.id)}>Edit</button>

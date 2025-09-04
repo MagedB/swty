@@ -27,7 +27,7 @@ export default function Orders() {
   };
 
   return (
-    <div style={{ maxWidth: "900px", margin: "50px auto" }}>
+    <div style={{ maxWidth: "1000px", margin: "50px auto" }}>
       <h1>My Orders</h1>
       <table border="1" cellPadding="5" cellSpacing="0" width="100%">
         <thead>
@@ -35,6 +35,7 @@ export default function Orders() {
             <th>ID</th>
             <th>Order Items</th>
             <th>Delivery Place</th>
+            <th>Items Total</th> {/* ✅ new column */}
             <th>Delivery Fee</th>
             <th>Total</th>
             <th>Status</th>
@@ -43,13 +44,13 @@ export default function Orders() {
         <tbody>
           {orders.length === 0 && (
             <tr>
-              <td colSpan="6" style={{ textAlign: "center" }}>
+              <td colSpan="7" style={{ textAlign: "center" }}>
                 You have no orders yet
               </td>
             </tr>
           )}
           {orders.map((order) => {
-            // Calculate total from unit_price and quantity
+            // ✅ Calculate items total and final total
             const itemsTotal = order.items.reduce(
               (sum, item) => sum + Number(item.unit_price) * (item.quantity || 1),
               0
@@ -80,6 +81,7 @@ export default function Orders() {
                   )}
                 </td>
                 <td>{order.delivery_place || "N/A"}</td>
+                <td>${itemsTotal.toFixed(2)}</td> {/* ✅ show Items Total */}
                 <td>${Number(order.delivery_fee || 0).toFixed(2)}</td>
                 <td>${total.toFixed(2)}</td>
                 <td>{order.status || "pending"}</td>

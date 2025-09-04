@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import apiFetch from "../api/api";
 import "./Fashion.css";
 
 export default function Fashion() {
@@ -8,7 +7,8 @@ export default function Fashion() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const data = await apiFetch("/products?category=fashion");
+        const res = await fetch("http://localhost:5000/api/products?category=fashion");
+        const data = await res.json();
         setProducts(data);
       } catch (err) {
         console.error("Error fetching fashion products:", err);
@@ -20,9 +20,7 @@ export default function Fashion() {
   const addToCart = (product) => {
     const savedCart = localStorage.getItem("cart");
     const cart = savedCart ? JSON.parse(savedCart) : [];
-
-    const existing = cart.find((item) => item.id === product.id);
-    if (!existing) {
+    if (!cart.find((item) => item.id === product.id)) {
       cart.push(product);
       localStorage.setItem("cart", JSON.stringify(cart));
       alert(`${product.name} added to cart!`);

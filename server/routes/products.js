@@ -21,7 +21,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// ✅ Add product
+/* ================================
+   ADD PRODUCT
+================================ */
 router.post(
   "/",
   requireAuth,
@@ -38,7 +40,9 @@ router.post(
       const image = req.file.filename;
 
       const result = await pool.query(
-        "INSERT INTO products (name, description, price, category, image) VALUES ($1,$2,$3,$4,$5) RETURNING *",
+        `INSERT INTO products (name, description, price, category, image, visible, created_at)
+         VALUES ($1,$2,$3,$4,$5,true, NOW())
+         RETURNING id, name, description, price, category, image, visible, created_at`,
         [name, description, price, category, image]
       );
 
@@ -50,21 +54,38 @@ router.post(
   }
 );
 
-// ✅ Get products by category
+/* ================================
+   GET PRODUCTS (with filters)
+================================ */
 router.get("/", async (req, res) => {
   try {
-    const { category } = req.query;
+    const { category, all } = req.query;
 
-    let result;
-    if (category) {
-      result = await pool.query(
-        "SELECT * FROM products WHERE category=$1 AND visible=true",
-        [category]
-      );
-    } else {
-      result = await pool.query("SELECT * FROM products WHERE visible=true");
+    let query = `
+      SELECT id, name, description, price, category, image, visible, created_at
+      FROM products
+    `;
+    const values = [];
+
+    // Public: only visible products
+    if (!all) {
+      query += ` WHERE visible = true`;
     }
 
+    // Add category filter if given
+    if (category) {
+      if (!all) {
+        query += ` AND category = $1`;
+        values.push(category);
+      } else {
+        query += ` WHERE category = $1`;
+        values.push(category);
+      }
+    }
+
+    query += ` ORDER BY id DESC`;
+
+    const result = await pool.query(query, values);
     res.json(result.rows);
   } catch (err) {
     console.error("Error fetching products:", err);
@@ -72,7 +93,50 @@ router.get("/", async (req, res) => {
   }
 });
 
-// ✅ Update product visibility
+/* ================================
+   UPDATE PRODUCT (edit)
+================================ */
+router.put(
+  "/:id",
+  requireAuth,
+  requireRole(["admin", "moderator"]),
+  upload.single("image"),
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { name, description, price, category } = req.body;
+
+      let query, values;
+
+      if (req.file) {
+        query = `UPDATE products
+                 SET name=$1, description=$2, price=$3, category=$4, image=$5
+                 WHERE id=$6 RETURNING id, name, description, price, category, image, visible, created_at`;
+        values = [name, description, price, category, req.file.filename, id];
+      } else {
+        query = `UPDATE products
+                 SET name=$1, description=$2, price=$3, category=$4
+                 WHERE id=$5 RETURNING id, name, description, price, category, image, visible, created_at`;
+        values = [name, description, price, category, id];
+      }
+
+      const result = await pool.query(query, values);
+
+      if (result.rows.length === 0) {
+        return res.status(404).json({ error: "Product not found" });
+      }
+
+      res.json(result.rows[0]);
+    } catch (err) {
+      console.error("Error updating product:", err);
+      res.status(500).json({ error: "Failed to update product" });
+    }
+  }
+);
+
+/* ================================
+   TOGGLE VISIBILITY (hide/show)
+================================ */
 router.patch(
   "/:id/visibility",
   requireAuth,
@@ -83,14 +147,46 @@ router.patch(
       const { id } = req.params;
 
       const result = await pool.query(
-        "UPDATE products SET visible=$1 WHERE id=$2 RETURNING *",
+        `UPDATE products
+         SET visible=$1
+         WHERE id=$2
+         RETURNING id, name, description, price, category, image, visible, created_at`,
         [visible, id]
       );
 
+      if (result.rows.length === 0) {
+        return res.status(404).json({ error: "Product not found" });
+      }
+
       res.json(result.rows[0]);
     } catch (err) {
-      console.error("Error updating visibility:", err);
+      console.error("Error toggling visibility:", err);
       res.status(500).json({ error: "Failed to update product visibility" });
+    }
+  }
+);
+
+/* ================================
+   DELETE PRODUCT
+================================ */
+router.delete(
+  "/:id",
+  requireAuth,
+  requireRole(["admin", "moderator"]),
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await pool.query(
+        "DELETE FROM products WHERE id=$1 RETURNING id",
+        [id]
+      );
+      if (result.rows.length === 0) {
+        return res.status(404).json({ error: "Product not found" });
+      }
+      res.json({ message: "Product deleted successfully" });
+    } catch (err) {
+      console.error("Error deleting product:", err);
+      res.status(500).json({ error: "Failed to delete product" });
     }
   }
 );

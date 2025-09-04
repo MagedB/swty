@@ -32,16 +32,16 @@ export default function Checkout() {
     }
 
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
       const token = localStorage.getItem("token");
 
-      // Prepare items for backend
+      // ✅ Prepare items for backend
       const orderItems = cartItems.map((item) => ({
-        product_id: item.id,      // backend expects product_id
+        product_id: item.id,               // backend expects product_id
         quantity: item.quantity || 1,
-        unit_price: Number(item.price), // matches database column
+        unit_price: Number(item.price),    // backend expects unit_price
       }));
 
+      // ✅ Use snake_case keys (backend expects these)
       const res = await fetch("http://localhost:5000/api/orders", {
         method: "POST",
         headers: {

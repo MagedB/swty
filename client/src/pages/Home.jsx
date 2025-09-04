@@ -3,21 +3,26 @@ import { Link } from "react-router-dom";
 import "./Home.css";
 
 export default function Home() {
+  const [productsByCategory, setProductsByCategory] = useState({
+    smart_devices: [],
+    fashion: [],
+    automotive: [],
+  });
+
   const [featured, setFeatured] = useState({
     smart_devices: [],
     fashion: [],
     automotive: [],
   });
 
-  // Track the starting index for carousel per category
-  const [startIndex, setStartIndex] = useState({
+  const [indexes, setIndexes] = useState({
     smart_devices: 0,
     fashion: 0,
     automotive: 0,
   });
 
   useEffect(() => {
-    const fetchFeatured = async () => {
+    const fetchAll = async () => {
       try {
         const categories = ["smart_devices", "fashion", "automotive"];
         const result = {};
@@ -26,93 +31,133 @@ export default function Home() {
             `http://localhost:5000/api/products?category=${cat}`
           );
           const data = await res.json();
-          result[cat] = data; // fetch all products
+          result[cat] = data;
         }
-        setFeatured(result);
+        setProductsByCategory(result);
+
+        const initialFeatured = {};
+        for (let cat of categories) {
+          initialFeatured[cat] = result[cat].slice(0, 3);
+        }
+        setFeatured(initialFeatured);
       } catch (err) {
         console.error("Failed to fetch products:", err);
       }
     };
-
-    fetchFeatured();
+    fetchAll();
   }, []);
 
-  // Rotate products every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setStartIndex((prev) => {
-        const updated = {};
-        for (let cat in prev) {
-          if (featured[cat]?.length > 3) {
-            updated[cat] = (prev[cat] + 1) % featured[cat].length;
-          } else {
-            updated[cat] = 0;
+      setFeatured((prevFeatured) => {
+        const newFeatured = { ...prevFeatured };
+        const newIndexes = { ...indexes };
+
+        Object.keys(productsByCategory).forEach((cat) => {
+          const allProducts = productsByCategory[cat];
+          if (allProducts.length <= 3) return;
+
+          newIndexes[cat] = (indexes[cat] + 1) % allProducts.length;
+          const start = newIndexes[cat];
+          newFeatured[cat] = [];
+          for (let i = 0; i < 3; i++) {
+            newFeatured[cat].push(allProducts[(start + i) % allProducts.length]);
           }
-        }
-        return updated;
+        });
+
+        setIndexes(newIndexes);
+        return newFeatured;
       });
-     }, 60000); // 60000ms = 1 minute
+    }, 60000);
 
     return () => clearInterval(interval);
-  }, [featured]);
+  }, [productsByCategory, indexes]);
 
-  const getVisibleItems = (category) => {
-    const items = featured[category] || [];
-    if (items.length <= 3) return items;
-    const start = startIndex[category];
-    const visible = [];
-    for (let i = 0; i < 3; i++) {
-      visible.push(items[(start + i) % items.length]);
-    }
-    return visible;
+  const categoryRoutes = {
+    smart_devices: "smart-devices",
+    fashion: "fashion",
+    automotive: "automotive",
   };
 
-  const renderCategory = (title, category, colorClass) => {
-    const items = getVisibleItems(category);
-    return (
-      <div className={`category-section ${colorClass}`}>
-        <h2 className="category-title">{title}</h2>
-        <div className="item-list">
-          {items.length > 0 ? (
-            items.map((item) => (
-              <div key={item.id} className="item-card">
-                <img
-                  src={
-                    item?.image
-                      ? item.image.startsWith("http")
-                        ? item.image
-                        : `http://localhost:5000/uploads/${item.image}`
-                      : "https://via.placeholder.com/150"
-                  }
-                  alt={item?.name || "Product"}
-                />
-                <div className="item-details">
-                  <h3>{item?.name || "Unnamed Product"}</h3>
-                  <p>${item?.price ? Number(item.price).toFixed(2) : "0.00"}</p>
-                  <Link to={`/${category}`} className="view-more-link">
-                    View More
-                  </Link>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p>No products available</p>
-          )}
-        </div>
+  const renderCategory = (title, items, category, colorClass) => (
+    <div className={`category-section ${colorClass}`}>
+      <h2 className="category-title">{title}</h2>
+      <div className="item-list">
+        {items.map((item) => (
+          <div key={item.id} className="item-card">
+            <img
+              src={
+                item.image?.startsWith("http")
+                  ? item.image
+                  : `http://localhost:5000/uploads/${item.image}`
+              }
+              alt={item.name}
+            />
+            <div className="item-details">
+              <h3>{item.name}</h3>
+              <p>${Number(item.price).toFixed(2)}</p>
+              <Link
+                to={`/${categoryRoutes[category]}`}
+                className="view-more-link"
+              >
+                View More
+              </Link>
+            </div>
+          </div>
+        ))}
       </div>
-    );
-  };
+    </div>
+  );
 
   return (
-    <div className="home-container">
-      <h1 className="home-title">Welcome to šwty</h1>
-      <p className="home-subtitle">
-        Your one-stop shop for Smart Devices, Fashion, and Automotive products!
-      </p>
+    <div className="home-page">
+      <div className="home-container">
+        <h1 className="home-title">Welcome to šwty</h1>
+        <p className="home-subtitle">
+          Your one-stop shop for Smart Devices, Fashion, and Automotive products!
+        </p>
 
-      {renderCategory("Smart Devices", "smart_devices", "color-smart")}
-      {renderCategory("Fashion", "fashion", "color-fashion")}
-      {renderCategory("Automotive", "automotive", "color-auto")}
+        {renderCategory(
+          "Smart Devices",
+          featured.smart_devices,
+          "smart_devices",
+          "color-smart"
+        )}
+        {renderCategory("Fashion", featured.fashion, "fashion", "color-fashion")}
+        {renderCategory(
+          "Automotive",
+          featured.automotive,
+          "automotive",
+          "color-auto"
+        )}
+      </div>
+
+      {/* Footer */}
+      <footer className="home-footer">
+        <div className="footer-line line1">© 2025 šwty. All Rights Reserved</div>
+        <div className="footer-line line2">
+          <div className="footer-left">
+            <Link to="/warranty">Warranty Policy</Link>
+            <Link to="/terms">Terms of Use</Link>
+            <Link to="/privacy">Privacy Policy</Link>
+          </div>
+          <div className="footer-right">
+            Contact us
+            <a href="https://facebook.com" target="_blank" rel="noreferrer">
+              <img src="/icons/facebook.png" alt="Facebook" />
+            </a>
+            <a href="https://instagram.com" target="_blank" rel="noreferrer">
+              <img src="/icons/instagram.png" alt="Instagram" />
+            </a>
+            <a href="https://youtube.com" target="_blank" rel="noreferrer">
+              <img src="/icons/youtube.png" alt="YouTube" />
+            </a>
+            <a href="https://tiktok.com" target="_blank" rel="noreferrer">
+              <img src="/icons/tiktok.png" alt="TikTok" />
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

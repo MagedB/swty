@@ -17,30 +17,30 @@ export default function Dashboard() {
 
       <div className="dashboard-buttons">
         {/* Available for all roles */}
-        <Link to="/dashboard/add-product">
-          <button className="dashboard-btn">Add Product</button>
+        <Link to="/dashboard/add-product" className="dashboard-btn">
+          Add Product
         </Link>
-        <Link to="/dashboard/manage-products">
-          <button className="dashboard-btn">Manage Products</button>
+        <Link to="/dashboard/manage-products" className="dashboard-btn">
+          Manage Products
         </Link>
 
         {/* Admin-only pages */}
         {user.role === "admin" && (
           <>
-            <Link to="/dashboard/manage-accounts">
-              <button className="dashboard-btn">Manage Accounts</button>
+            <Link to="/dashboard/manage-accounts" className="dashboard-btn">
+              Manage Accounts
             </Link>
-            <Link to="/dashboard/manage-orders">
-              <button className="dashboard-btn">Manage Orders</button>
+            <Link to="/dashboard/manage-orders" className="dashboard-btn">
+              Manage Orders
             </Link>
-            <Link to="/dashboard/manage-delivery">
-              <button className="dashboard-btn">Manage Delivery</button>
+            <Link to="/dashboard/manage-delivery" className="dashboard-btn">
+              Manage Delivery
             </Link>
-            <Link to="/dashboard/manage-finance">
-              <button className="dashboard-btn">Manage Finance</button>
+            <Link to="/dashboard/manage-finance" className="dashboard-btn">
+              Manage Finance
             </Link>
-            <Link to="/dashboard/social-media">
-              <button className="dashboard-btn">Social Media</button>
+            <Link to="/dashboard/social-media" className="dashboard-btn">
+              Social Media
             </Link>
           </>
         )}

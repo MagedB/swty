@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "../styles/Table.css"; // ✅ reuse same styles
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);
@@ -27,15 +28,16 @@ export default function Orders() {
   };
 
   return (
-    <div style={{ maxWidth: "1000px", margin: "50px auto" }}>
-      <h1>My Orders</h1>
-      <table border="1" cellPadding="5" cellSpacing="0" width="100%">
+    <div style={{ maxWidth: "1200px", margin: "50px auto" }}>
+      <h1 className="table-title">My Orders</h1>
+
+      <table className="styled-table">
         <thead>
           <tr>
             <th>ID</th>
             <th>Order Items</th>
             <th>Delivery Place</th>
-            <th>Items Total</th> {/* ✅ new column */}
+            <th>Items Total</th>
             <th>Delivery Fee</th>
             <th>Total</th>
             <th>Status</th>
@@ -50,7 +52,6 @@ export default function Orders() {
             </tr>
           )}
           {orders.map((order) => {
-            // ✅ Calculate items total and final total
             const itemsTotal = order.items.reduce(
               (sum, item) => sum + Number(item.unit_price) * (item.quantity || 1),
               0
@@ -64,15 +65,20 @@ export default function Orders() {
                   {order.items.length === 0 ? (
                     <p>No items</p>
                   ) : (
-                    <ul style={{ listStyle: "none", padding: 0 }}>
+                    <ul className="order-items-list">
                       {order.items.map((item) => (
-                        <li
-                          key={item.id}
-                          style={{ display: "flex", alignItems: "center", gap: "10px" }}
-                        >
-                          <img src={item.image} alt={item.name} width="50" />
+                        <li key={item.id} className="order-item">
+                          <img
+                            src={
+                              item.image?.startsWith("http")
+                                ? item.image
+                                : `http://localhost:5000/uploads/${item.image}`
+                            }
+                            alt={item.name}
+                            className="order-item-image"
+                          />
                           <span>
-                            {item.name} x {item.quantity || 1} - $
+                            {item.name} x {item.quantity || 1} – $
                             {Number(item.unit_price).toFixed(2)}
                           </span>
                         </li>
@@ -81,7 +87,7 @@ export default function Orders() {
                   )}
                 </td>
                 <td>{order.delivery_place || "N/A"}</td>
-                <td>${itemsTotal.toFixed(2)}</td> {/* ✅ show Items Total */}
+                <td>${itemsTotal.toFixed(2)}</td>
                 <td>${Number(order.delivery_fee || 0).toFixed(2)}</td>
                 <td>${total.toFixed(2)}</td>
                 <td>{order.status || "pending"}</td>

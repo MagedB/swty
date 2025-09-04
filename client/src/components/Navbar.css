@@ -4,7 +4,7 @@
   align-items: center;
   flex-wrap: wrap;
   padding: 10px 20px;
-  background-color: #3498db; /* Navbar background */
+  background-color: #3498db;
   color: #fff;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   border-radius: 8px;
@@ -19,7 +19,7 @@
 }
 
 .navbar a:hover {
-  color: #ffdd59; /* Highlight on hover */
+  color: #ffdd59;
 }
 
 .navbar-left {
@@ -31,7 +31,7 @@
 .navbar-brand {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #ffdd59; /* Brand color */
+  color: #ffdd59;
 }
 
 .navbar-right {
@@ -69,6 +69,30 @@
 .logout-btn:hover {
   background: #fff;
   color: #3498db;
+}
+
+/* Cart badge */
+.cart-link {
+  position: relative;
+  display: inline-block;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background: red;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 50%;
+}
+
+/* Animation when cart updates */
+.cart-badge.animate {
+  transform: scale(1.4);
+  transition: transform 0.2s;
 }
 
 /* Responsive */

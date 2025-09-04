@@ -77,7 +77,7 @@ export default function Checkout() {
           <h2>Order Summary</h2>
           {cartItems.map((item) => (
             <div key={item.id} className="checkout-item">
-              <img src={item.image} alt={item.name} width="80" />
+              <img src={`http://localhost:5000/uploads/${item.image}`} alt={item.name} width="80" />
               <p>
                 {item.name} - ${Number(item.price).toFixed(2)} x{" "}
                 {item.quantity || 1}

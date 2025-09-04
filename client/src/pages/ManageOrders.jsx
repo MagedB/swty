@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "../styles/Table.css"; // ✅ reuse the same styles
 
 export default function ManageOrders() {
   const [orders, setOrders] = useState([]);
@@ -76,10 +77,11 @@ export default function ManageOrders() {
   };
 
   return (
-    <div style={{ maxWidth: "1000px", margin: "50px auto" }}>
-      <h1>Manage Orders</h1>
-      {msg && <p>{msg}</p>}
-      <table border="1" cellPadding="5" cellSpacing="0" width="100%">
+    <div style={{ maxWidth: "1200px", margin: "50px auto" }}>
+      <h1 className="table-title">Manage Orders</h1>
+      {msg && <p style={{ textAlign: "center", color: "red" }}>{msg}</p>}
+
+      <table className="styled-table">
         <thead>
           <tr>
             <th>ID</th>
@@ -87,13 +89,20 @@ export default function ManageOrders() {
             <th>Phone</th>
             <th>Order Items</th>
             <th>Delivery Place</th>
-            <th>Items Total</th> {/* ✅ new column */}
+            <th>Items Total</th>
             <th>Delivery Fee</th>
             <th>Total</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
+          {orders.length === 0 && (
+            <tr>
+              <td colSpan="9" style={{ textAlign: "center" }}>
+                No orders found
+              </td>
+            </tr>
+          )}
           {orders.map((order) => {
             const user = order.user || {};
             const items = order.items || [];
@@ -109,12 +118,23 @@ export default function ManageOrders() {
                 <td>{user.username || "N/A"}</td>
                 <td>{user.phone || "N/A"}</td>
                 <td>
-                  <ul>
+                  <ul className="order-items-list">
                     {items.length > 0 ? (
                       items.map((item) => (
-                        <li key={item.id}>
-                          {item.name} x {item.quantity || 1} ($
-                          {Number(item.unit_price).toFixed(2)})
+                        <li key={item.id} className="order-item">
+                          <img
+                            src={
+                              item.image?.startsWith("http")
+                                ? item.image
+                                : `http://localhost:5000/uploads/${item.image}`
+                            }
+                            alt={item.name}
+                            className="order-item-image"
+                          />
+                          <span>
+                            {item.name} x {item.quantity || 1} – $
+                            {Number(item.unit_price).toFixed(2)}
+                          </span>
                         </li>
                       ))
                     ) : (
@@ -123,14 +143,19 @@ export default function ManageOrders() {
                   </ul>
                 </td>
                 <td>{order.delivery_place || "N/A"}</td>
-                <td>${itemsTotal.toFixed(2)}</td> {/* ✅ show Items Total */}
+                <td>${itemsTotal.toFixed(2)}</td>
                 <td>${Number(order.delivery_fee || 0).toFixed(2)}</td>
                 <td>${total.toFixed(2)}</td>
                 <td>
-                  <button onClick={() => handleEdit(order.id)}>Edit</button>
                   <button
+                    className="btn-edit"
+                    onClick={() => handleEdit(order.id)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="btn-delete"
                     onClick={() => handleDelete(order.id)}
-                    style={{ marginLeft: "5px" }}
                   >
                     Delete
                   </button>

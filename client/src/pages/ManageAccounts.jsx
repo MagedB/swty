@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "../styles/Table.css"; // Use the shared table styles
 
 export default function ManageAccounts() {
   const [users, setUsers] = useState([]);
@@ -75,10 +76,11 @@ export default function ManageAccounts() {
   };
 
   return (
-    <div style={{ maxWidth: "800px", margin: "50px auto" }}>
-      <h1>Manage Accounts</h1>
-      {msg && <p>{msg}</p>}
-      <table border="1" cellPadding="5" cellSpacing="0" width="100%">
+    <div className="manage-container">
+      <h1 className="table-title">Manage Accounts</h1>
+      {msg && <p style={{ textAlign: "center", color: "red" }}>{msg}</p>}
+
+      <table className="styled-table">
         <thead>
           <tr>
             <th>ID</th>
@@ -90,6 +92,13 @@ export default function ManageAccounts() {
           </tr>
         </thead>
         <tbody>
+          {users.length === 0 && (
+            <tr>
+              <td colSpan="6" style={{ textAlign: "center" }}>
+                No users found
+              </td>
+            </tr>
+          )}
           {users.map((user) => (
             <tr key={user.id}>
               <td>{user.id}</td>
@@ -100,6 +109,7 @@ export default function ManageAccounts() {
                 <select
                   value={user.role}
                   onChange={(e) => handleRoleChange(user.id, e.target.value)}
+                  style={{ padding: "5px", borderRadius: "4px" }}
                 >
                   <option value="admin">Admin</option>
                   <option value="moderator">Moderator</option>
@@ -107,7 +117,9 @@ export default function ManageAccounts() {
                 </select>
               </td>
               <td>
-                <button onClick={() => handleDelete(user.id)}>Delete</button>
+                <button className="delete-btn" onClick={() => handleDelete(user.id)}>
+                  Delete
+                </button>
               </td>
             </tr>
           ))}

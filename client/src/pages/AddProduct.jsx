@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import "../styles/Table.css"; // ✅ reuse global styles
 
 export default function AddProduct() {
   const [name, setName] = useState("");
@@ -94,19 +95,22 @@ export default function AddProduct() {
     if (!editProduct) return;
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/api/products/${editProduct.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          name: editProduct.name,
-          description: editProduct.description,
-          price: editProduct.price,
-          category: editProduct.category,
-        }),
-      });
+      const res = await fetch(
+        `http://localhost:5000/api/products/${editProduct.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            name: editProduct.name,
+            description: editProduct.description,
+            price: editProduct.price,
+            category: editProduct.category,
+          }),
+        }
+      );
 
       if (!res.ok) throw new Error("Failed to update product");
       setEditProduct(null); // close modal
@@ -118,83 +122,63 @@ export default function AddProduct() {
   };
 
   return (
-    <div style={{ maxWidth: "1000px", margin: "50px auto" }}>
-      <h1>Add Product</h1>
+    <div className="manage-container">
+      <h1 className="table-title">Add Product</h1>
 
       {/* Form + Image side by side */}
-      <div style={{ display: "flex", gap: "30px", alignItems: "flex-start" }}>
+      <div className="form-container">
         {/* Left - Form */}
-        <form onSubmit={handleSubmit} style={{ flex: 1 }}>
-          <div>
+        <form onSubmit={handleSubmit} className="form-box">
+          <div className="form-group">
             <label>Name:</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              style={{ width: "100%", padding: "8px", margin: "5px 0" }}
             />
           </div>
-          <div>
+          <div className="form-group">
             <label>Description:</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
-              style={{ width: "100%", padding: "8px", margin: "5px 0" }}
             />
           </div>
-          <div>
+          <div className="form-group">
             <label>Price:</label>
             <input
               type="number"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
               required
-              style={{ width: "100%", padding: "8px", margin: "5px 0" }}
             />
           </div>
-          <div>
+          <div className="form-group">
             <label>Category:</label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              style={{ width: "100%", padding: "8px", margin: "5px 0" }}
             >
               <option value="smart_devices">Smart Devices</option>
               <option value="fashion">Fashion</option>
               <option value="automotive">Automotive</option>
             </select>
           </div>
-          <div>
+          <div className="form-group">
             <label>Image:</label>
-            <input
-              type="file"
-              onChange={handleImageChange}
-              accept="image/*"
-              required
-              style={{ margin: "5px 0" }}
-            />
+            <input type="file" onChange={handleImageChange} accept="image/*" />
           </div>
-          <button type="submit" style={{ marginTop: "10px" }}>
+          <button type="submit" className="btn-edit">
             Add Product
           </button>
         </form>
 
         {/* Right - Image Preview */}
-        <div style={{ flex: 1, textAlign: "center" }}>
+        <div className="image-preview">
           {preview ? (
-            <img
-              src={preview}
-              alt="Preview"
-              style={{
-                maxWidth: "100%",
-                maxHeight: "300px",
-                border: "1px solid #ccc",
-                borderRadius: "8px",
-                padding: "5px",
-              }}
-            />
+            <img src={preview} alt="Preview" />
           ) : (
             <p>No image selected</p>
           )}
@@ -202,8 +186,8 @@ export default function AddProduct() {
       </div>
 
       {/* Product List */}
-      <h2 style={{ marginTop: "40px" }}>Last 50 Products</h2>
-      <table border="1" cellPadding="5" cellSpacing="0" width="100%">
+      <h2 className="table-subtitle">Last 50 Products</h2>
+      <table className="styled-table">
         <thead>
           <tr>
             <th>ID</th>
@@ -230,7 +214,9 @@ export default function AddProduct() {
               <td>${Number(p.price).toFixed(2)}</td>
               <td>{p.category}</td>
               <td>
-                <button onClick={() => setEditProduct(p)}>Edit</button>
+                <button className="btn-edit" onClick={() => setEditProduct(p)}>
+                  Edit
+                </button>
               </td>
             </tr>
           ))}
@@ -239,29 +225,10 @@ export default function AddProduct() {
 
       {/* Edit Modal */}
       {editProduct && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            background: "rgba(0,0,0,0.5)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <div
-            style={{
-              background: "#fff",
-              padding: "20px",
-              borderRadius: "8px",
-              width: "400px",
-            }}
-          >
+        <div className="modal-overlay">
+          <div className="modal">
             <h3>Edit Product</h3>
-            <div>
+            <div className="form-group">
               <label>Name:</label>
               <input
                 type="text"
@@ -269,20 +236,21 @@ export default function AddProduct() {
                 onChange={(e) =>
                   setEditProduct({ ...editProduct, name: e.target.value })
                 }
-                style={{ width: "100%", margin: "5px 0" }}
               />
             </div>
-            <div>
+            <div className="form-group">
               <label>Description:</label>
               <textarea
                 value={editProduct.description}
                 onChange={(e) =>
-                  setEditProduct({ ...editProduct, description: e.target.value })
+                  setEditProduct({
+                    ...editProduct,
+                    description: e.target.value,
+                  })
                 }
-                style={{ width: "100%", margin: "5px 0" }}
               />
             </div>
-            <div>
+            <div className="form-group">
               <label>Price:</label>
               <input
                 type="number"
@@ -290,28 +258,28 @@ export default function AddProduct() {
                 onChange={(e) =>
                   setEditProduct({ ...editProduct, price: e.target.value })
                 }
-                style={{ width: "100%", margin: "5px 0" }}
               />
             </div>
-            <div>
+            <div className="form-group">
               <label>Category:</label>
               <select
                 value={editProduct.category}
                 onChange={(e) =>
                   setEditProduct({ ...editProduct, category: e.target.value })
                 }
-                style={{ width: "100%", margin: "5px 0" }}
               >
                 <option value="smart_devices">Smart Devices</option>
                 <option value="fashion">Fashion</option>
                 <option value="automotive">Automotive</option>
               </select>
             </div>
-            <div style={{ marginTop: "10px" }}>
-              <button onClick={handleEditSave}>Save</button>
+            <div className="modal-actions">
+              <button className="btn-edit" onClick={handleEditSave}>
+                Save
+              </button>
               <button
+                className="btn-delete"
                 onClick={() => setEditProduct(null)}
-                style={{ marginLeft: "10px" }}
               >
                 Cancel
               </button>

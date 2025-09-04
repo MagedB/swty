@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "../styles/Table.css"; // contains table + modal styles
 
 export default function ManageProducts() {
   const [products, setProducts] = useState([]);
@@ -81,9 +82,9 @@ export default function ManageProducts() {
   };
 
   return (
-    <div style={{ maxWidth: "1200px", margin: "50px auto" }}>
+    <div className="manage-container">
       <h1>Manage Products</h1>
-      <table border="1" cellPadding="8" cellSpacing="0" width="100%">
+      <table className="styled-table">
         <thead>
           <tr>
             <th>ID</th>
@@ -110,7 +111,7 @@ export default function ManageProducts() {
                   <img
                     src={`http://localhost:5000/uploads/${p.image}`}
                     alt={p.name}
-                    style={{ width: "60px", height: "60px", objectFit: "cover" }}
+                    className="table-image"
                   />
                 ) : (
                   "No Image"
@@ -120,15 +121,12 @@ export default function ManageProducts() {
               <td>{p.visible ? "Yes" : "No"}</td>
               <td>
                 <button onClick={() => setEditProduct(p)}>Edit</button>
-                <button
-                  onClick={() => handleToggleVisible(p.id, p.visible)}
-                  style={{ marginLeft: "5px" }}
-                >
+                <button onClick={() => handleToggleVisible(p.id, p.visible)}>
                   {p.visible ? "Hide" : "Show"}
                 </button>
                 <button
                   onClick={() => handleDelete(p.id)}
-                  style={{ marginLeft: "5px", color: "red" }}
+                  className="delete-btn"
                 >
                   Delete
                 </button>
@@ -140,62 +138,51 @@ export default function ManageProducts() {
 
       {/* Edit Modal */}
       {editProduct && (
-        <div
-          style={{
-            position: "fixed",
-            top: "20%",
-            left: "30%",
-            background: "white",
-            padding: "20px",
-            border: "1px solid black",
-            zIndex: 1000,
-          }}
-        >
-          <h2>Edit Product</h2>
-          <input
-            type="text"
-            value={editProduct.name}
-            onChange={(e) =>
-              setEditProduct({ ...editProduct, name: e.target.value })
-            }
-            placeholder="Name"
-          />
-          <br />
-          <textarea
-            value={editProduct.description}
-            onChange={(e) =>
-              setEditProduct({ ...editProduct, description: e.target.value })
-            }
-            placeholder="Description"
-          />
-          <br />
-          <input
-            type="number"
-            value={editProduct.price}
-            onChange={(e) =>
-              setEditProduct({ ...editProduct, price: e.target.value })
-            }
-            placeholder="Price"
-          />
-          <br />
-          <input
-            type="text"
-            value={editProduct.category}
-            onChange={(e) =>
-              setEditProduct({ ...editProduct, category: e.target.value })
-            }
-            placeholder="Category"
-          />
-          <br />
-          <input
-            type="file"
-            onChange={(e) =>
-              setEditProduct({ ...editProduct, imageFile: e.target.files[0] })
-            }
-          />
-          <br />
-          <button onClick={handleEditSave}>Save</button>
-          <button onClick={() => setEditProduct(null)}>Cancel</button>
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Edit Product</h2>
+            <input
+              type="text"
+              value={editProduct.name}
+              onChange={(e) =>
+                setEditProduct({ ...editProduct, name: e.target.value })
+              }
+              placeholder="Name"
+            />
+            <textarea
+              value={editProduct.description}
+              onChange={(e) =>
+                setEditProduct({ ...editProduct, description: e.target.value })
+              }
+              placeholder="Description"
+            />
+            <input
+              type="number"
+              value={editProduct.price}
+              onChange={(e) =>
+                setEditProduct({ ...editProduct, price: e.target.value })
+              }
+              placeholder="Price"
+            />
+            <input
+              type="text"
+              value={editProduct.category}
+              onChange={(e) =>
+                setEditProduct({ ...editProduct, category: e.target.value })
+              }
+              placeholder="Category"
+            />
+            <input
+              type="file"
+              onChange={(e) =>
+                setEditProduct({ ...editProduct, imageFile: e.target.files[0] })
+              }
+            />
+            <div className="modal-actions">
+              <button onClick={handleEditSave}>Save</button>
+              <button onClick={() => setEditProduct(null)}>Cancel</button>
+            </div>
+          </div>
         </div>
       )}
     </div>

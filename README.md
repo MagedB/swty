@@ -13,7 +13,7 @@ This project is a beginner-friendly full web app:
 cd swty
 docker compose up -d
 ```
-The db runs at `localhost:5432` with user `swty`, password `swty`, database `swty`.
+The db runs at `localhost:5432` with user `swty`, password `swtypass`, database `swty`.
 
 2) **Configure the backend**
 ```bash

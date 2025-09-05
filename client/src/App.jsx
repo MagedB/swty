@@ -4,6 +4,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
 
+// Public Pages
 import Home from "./pages/Home";
 import SmartDevices from "./pages/SmartDevices";
 import Fashion from "./pages/Fashion";
@@ -13,6 +14,9 @@ import Checkout from "./pages/Checkout";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Orders from "./pages/Orders";
+import SearchResults from "./pages/SearchResults";
+
+// Dashboard Pages
 import Dashboard from "./pages/Dashboard";
 import AddProduct from "./pages/AddProduct";
 import ManageProducts from "./pages/ManageProducts";
@@ -22,14 +26,10 @@ import ManageDelivery from "./pages/ManageDelivery";
 import ManageFinance from "./pages/ManageFinance";
 import SocialMedia from "./pages/SocialMedia";
 
-
-
-
-
 function App() {
   const { user } = useAuth();
 
-  // helper to protect routes
+  // ✅ Helper for protecting routes
   const ProtectedRoute = ({ children, roles }) => {
     if (!user) return <Navigate to="/login" replace />;
     if (roles && !roles.includes(user.role)) return <Navigate to="/" replace />;
@@ -40,7 +40,7 @@ function App() {
     <>
       <Navbar />
       <Routes>
-        {/* Public pages */}
+        {/* 🔹 Public pages */}
         <Route path="/" element={<Home />} />
         <Route path="/smart-devices" element={<SmartDevices />} />
         <Route path="/fashion" element={<Fashion />} />
@@ -51,7 +51,10 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/orders" element={<Orders />} />
 
-        {/* Dashboard pages (only admin & moderator) */}
+        {/* 🔹 Search page */}
+        <Route path="/search" element={<SearchResults />} />
+
+        {/* 🔹 Dashboard pages (admin & moderator) */}
         <Route
           path="/dashboard"
           element={
@@ -77,7 +80,7 @@ function App() {
           }
         />
 
-        {/* Admin-only pages */}
+        {/* 🔹 Admin-only dashboard pages */}
         <Route
           path="/dashboard/manage-accounts"
           element={
@@ -119,7 +122,7 @@ function App() {
           }
         />
 
-        {/* Catch-all */}
+        {/* 🔹 Catch-all redirect */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>

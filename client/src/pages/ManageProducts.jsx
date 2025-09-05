@@ -120,8 +120,13 @@ export default function ManageProducts() {
               <td>{new Date(p.created_at).toLocaleString()}</td>
               <td>{p.visible ? "Yes" : "No"}</td>
               <td>
-                <button onClick={() => setEditProduct(p)}>Edit</button>
-                <button onClick={() => handleToggleVisible(p.id, p.visible)}>
+                <button className="btn-edit" onClick={() => setEditProduct(p)}>
+                  Edit
+                </button>
+                <button
+                  className="btn-toggle"
+                  onClick={() => handleToggleVisible(p.id, p.visible)}
+                >
                   {p.visible ? "Hide" : "Show"}
                 </button>
                 <button
@@ -139,8 +144,8 @@ export default function ManageProducts() {
       {/* Edit Modal */}
       {editProduct && (
         <div className="modal-overlay">
-          <div className="modal-content">
-            <h2>Edit Product</h2>
+          <div className="modal">
+            <h3>Edit Product</h3>
             <input
               type="text"
               value={editProduct.name}
@@ -152,7 +157,10 @@ export default function ManageProducts() {
             <textarea
               value={editProduct.description}
               onChange={(e) =>
-                setEditProduct({ ...editProduct, description: e.target.value })
+                setEditProduct({
+                  ...editProduct,
+                  description: e.target.value,
+                })
               }
               placeholder="Description"
             />
@@ -175,12 +183,22 @@ export default function ManageProducts() {
             <input
               type="file"
               onChange={(e) =>
-                setEditProduct({ ...editProduct, imageFile: e.target.files[0] })
+                setEditProduct({
+                  ...editProduct,
+                  imageFile: e.target.files[0],
+                })
               }
             />
             <div className="modal-actions">
-              <button onClick={handleEditSave}>Save</button>
-              <button onClick={() => setEditProduct(null)}>Cancel</button>
+              <button className="btn-edit" onClick={handleEditSave}>
+                Save
+              </button>
+              <button
+                className="btn-delete"
+                onClick={() => setEditProduct(null)}
+              >
+                Cancel
+              </button>
             </div>
           </div>
         </div>

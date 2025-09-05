@@ -7,17 +7,15 @@ export default function ProductCard({ product }) {
 
     const existingIndex = cart.findIndex((item) => item.id === product.id);
     if (existingIndex === -1) {
-      // Add new item with quantity 1
       cart.push({ ...product, quantity: 1 });
     } else {
-      // Increment quantity if item already exists
       cart[existingIndex].quantity += 1;
     }
 
     localStorage.setItem("cart", JSON.stringify(cart));
 
-    // Trigger Navbar badge update
-    window.dispatchEvent(new Event("cartUpdated"));
+    // ✅ Trigger Navbar badge update with new count
+    window.dispatchEvent(new CustomEvent("cartUpdated", { detail: cart.length }));
 
     alert(`${product.name} ${existingIndex === -1 ? "added" : "quantity increased"}!`);
   };

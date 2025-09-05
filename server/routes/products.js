@@ -8,7 +8,7 @@ import { requireRole } from "../middleware/role.js";
 
 const router = express.Router();
 
-// ✅ Set up storage with unique filenames
+// ✅ Multer setup for file uploads
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -18,7 +18,6 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + path.extname(file.originalname));
   },
 });
-
 const upload = multer({ storage });
 
 /* ================================
@@ -72,7 +71,7 @@ router.get("/", async (req, res) => {
       query += ` WHERE visible = true`;
     }
 
-    // Add category filter if given
+    // Add category filter
     if (category) {
       if (!all) {
         query += ` AND category = $1`;
@@ -94,7 +93,7 @@ router.get("/", async (req, res) => {
 });
 
 /* ================================
-   UPDATE PRODUCT (edit)
+   UPDATE PRODUCT
 ================================ */
 router.put(
   "/:id",
@@ -135,7 +134,7 @@ router.put(
 );
 
 /* ================================
-   TOGGLE VISIBILITY (hide/show)
+   TOGGLE VISIBILITY
 ================================ */
 router.patch(
   "/:id/visibility",
@@ -165,6 +164,33 @@ router.patch(
     }
   }
 );
+
+/* ================================
+   SEARCH PRODUCTS
+================================ */
+router.get("/search", async (req, res) => {
+  try {
+    const { q } = req.query;
+
+    if (!q || q.trim() === "") {
+      return res.status(400).json({ error: "Search query required" });
+    }
+
+    const result = await pool.query(
+      `SELECT id, name, description, price, category, image, visible, created_at
+       FROM products
+       WHERE visible = true
+         AND (LOWER(name) LIKE LOWER($1) OR LOWER(description) LIKE LOWER($1))
+       ORDER BY id DESC`,
+      [`%${q}%`]
+    );
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Error searching products:", err);
+    res.status(500).json({ error: "Failed to search products" });
+  }
+});
 
 /* ================================
    DELETE PRODUCT

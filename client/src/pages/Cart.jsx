@@ -16,7 +16,9 @@ export default function Cart() {
   const updateCart = (updatedCart) => {
     setCartItems(updatedCart);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
-    window.dispatchEvent(new Event("cartUpdated"));
+
+    // ✅ Trigger update with new count
+    window.dispatchEvent(new CustomEvent("cartUpdated", { detail: updatedCart.length }));
   };
 
   // Remove item
@@ -66,9 +68,7 @@ export default function Cart() {
                 />
                 <div className="cart-details">
                   <h3>{item.name}</h3>
-                  <p className="cart-price">
-                    ${Number(item.price).toFixed(2)}
-                  </p>
+                  <p className="cart-price">${Number(item.price).toFixed(2)}</p>
 
                   <div className="cart-quantity">
                     <button onClick={() => changeQuantity(item.id, -1)}>-</button>

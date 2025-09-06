@@ -85,8 +85,12 @@ function Navbar() {
         <div className="main-left">
           <Link to="/">Home</Link>
           <Link to="/smart-devices">Smart Devices</Link>
-          <Link to="/fashion">Fashion</Link>
+          <Link to="/mobiles-tablets">Mobiles Tablets</Link>
+          <Link to="/woman-fashion">Woman Fashion</Link>
+          <Link to="/man-fashion">Man Fashion</Link>
+          <Link to="/kids">Kids</Link>
           <Link to="/automotive">Automotive</Link>
+          
           {user && ["admin", "moderator"].includes(user.role) && (
             <Link to="/dashboard">Dashboard</Link>
           )}
@@ -94,13 +98,16 @@ function Navbar() {
 
         {/* Right Auth Links */}
         <div className="main-right">
+          <Link to="/blogs">Blogs</Link>
           {!user ? (
             <>
               <Link to="/login" className="auth-link">Login</Link>
               <Link to="/register" className="auth-link">Register</Link>
+              
             </>
           ) : (
             <button onClick={logout} className="logout-btn">Logout</button>
+            
           )}
         </div>
       </nav>

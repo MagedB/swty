@@ -54,3 +54,16 @@ CREATE TABLE order_items (
   quantity INTEGER NOT NULL CHECK (quantity > 0),
   unit_price NUMERIC(10,2) NOT NULL
 );
+-- =====================
+-- Blogs
+-- =====================
+CREATE TABLE blogs (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  slug VARCHAR(255) UNIQUE NOT NULL,
+  content TEXT NOT NULL,
+  category VARCHAR(100),
+  author VARCHAR(100),
+  image VARCHAR(255),
+  created_at TIMESTAMP DEFAULT NOW()
+);

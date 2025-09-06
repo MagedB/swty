@@ -162,7 +162,10 @@ export default function AddProduct() {
               onChange={(e) => setCategory(e.target.value)}
             >
               <option value="smart_devices">Smart Devices</option>
-              <option value="fashion">Fashion</option>
+              <option value="mobiles_tablets">Mobiles Tablets</option>
+              <option value="woman_fashion">Woman Fashion</option>
+              <option value="man_fashion">Man Fashion</option>
+              <option value="kids">Kids</option>
               <option value="automotive">Automotive</option>
             </select>
           </div>
@@ -269,7 +272,10 @@ export default function AddProduct() {
                 }
               >
                 <option value="smart_devices">Smart Devices</option>
-                <option value="fashion">Fashion</option>
+                <option value="mobiles_tablets">Mobiles Tablets</option>
+                <option value="woman_fashion">Woman Fashion</option>
+                <option value="man_fashion">Man Fashion</option>
+                <option value="kids">Kids</option>
                 <option value="automotive">Automotive</option>
               </select>
             </div>

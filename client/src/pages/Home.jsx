@@ -5,26 +5,35 @@ import "./Home.css";
 export default function Home() {
   const [productsByCategory, setProductsByCategory] = useState({
     smart_devices: [],
-    fashion: [],
+    mobiles_tablets: [],
+    woman_fashion: [],
+    man_fashion: [],
+    kids: [],
     automotive: [],
   });
 
   const [featured, setFeatured] = useState({
     smart_devices: [],
-    fashion: [],
+    mobiles_tablets: [],
+    woman_fashion: [],
+    man_fashion: [],
+    kids: [],
     automotive: [],
   });
 
   const [indexes, setIndexes] = useState({
     smart_devices: 0,
-    fashion: 0,
+    mobiles_tablets: 0,
+    woman_fashion: 0,
+    man_fashion: 0,
+    kids: 0,
     automotive: 0,
   });
 
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const categories = ["smart_devices", "fashion", "automotive"];
+        const categories = ["smart_devices", "mobiles_tablets", "woman_fashion", "man_fashion", "kids", "automotive"];
         const result = {};
         for (let cat of categories) {
           const res = await fetch(
@@ -75,7 +84,10 @@ export default function Home() {
 
   const categoryRoutes = {
     smart_devices: "smart-devices",
-    fashion: "fashion",
+    mobiles_tablets: "mobiles-tablets",
+    woman_fashion: "woman-fashion",
+    man_fashion: "man-fashion",
+    kids: "kids",
     automotive: "automotive",
   };
 
@@ -123,7 +135,10 @@ export default function Home() {
           "smart_devices",
           "color-smart"
         )}
-        {renderCategory("Fashion", featured.fashion, "fashion", "color-fashion")}
+        {renderCategory("Mobiles Tablets", featured.mobiles_tablets, "mobiles_tablets", "color-smart")}
+        {renderCategory("Woman Fashion", featured.woman_fashion, "woman_fashion", "color-fashion")}
+        {renderCategory("Man Fashion", featured.man_fashion, "man_fashion", "color-fashion")}
+        {renderCategory("Kids", featured.kids, "kids", "color-auto")}
         {renderCategory(
           "Automotive",
           featured.automotive,

@@ -71,6 +71,22 @@ router.get("/slug/:slug", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+// Get single blog by ID
+router.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const blog = await pool.query("SELECT * FROM blogs WHERE id = $1", [id]);
+
+    if (blog.rows.length === 0) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+
+    res.json(blog.rows[0]);
+  } catch (err) {
+    console.error("Error fetching blog:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 // ✅ Create new blog (with image upload)
 router.post("/", upload.single("image"), async (req, res) => {

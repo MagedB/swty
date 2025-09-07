@@ -20,14 +20,14 @@ import Orders from "./pages/Orders";
 import SearchResults from "./pages/SearchResults";
 
 // Blog Pages
-import Blogs from "./pages/Blogs";
-import SmartDevicesBlog from "./pages/blogs/SmartDevicesBlog";
-import MobilesTabletsBlog from "./pages/blogs/MobilesTabletsBlog";
-import WomenFashionBlog from "./pages/blogs/WomenFashionBlog";
-import MenFashionBlog from "./pages/blogs/MenFashionBlog";
-import KidsBlog from "./pages/blogs/KidsBlog";
-import AutomotiveBlog from "./pages/blogs/AutomotiveBlog";
-import Category from "./pages/blogs/Category";
+import Blogs from "./pages/blogs/Blogs";
+import ManFashionBlog from "./pages/blogs/manfashionblog";
+import WomanFashionBlog from "./pages/blogs/womanfashionblog";
+import KidsBlog from "./pages/blogs/kidsblog";
+import SmartDeviceBlog from "./pages/blogs/smartdeviceblog";
+import MobilesTabletsBlog from "./pages/blogs/mobilestabletsblog";
+import AutomotiveBlog from "./pages/blogs/automotiveblog";
+import Category from "./pages/blogs/Category"; 
 import BlogPost from "./pages/blogs/BlogPost";
 
 // Dashboard + Management Pages
@@ -39,7 +39,8 @@ import ManageOrders from "./pages/ManageOrders";
 import ManageDelivery from "./pages/ManageDelivery";
 import ManageFinance from "./pages/ManageFinance";
 import SocialMedia from "./pages/SocialMedia";
-import ManageBlogs from "./pages/ManageBlogs";   // ✅ Correct path now
+import ManageBlogs from "./pages/ManageBlogs"; 
+import AddBlogs from "./pages/AddBlogs"; 
 
 function App() {
   const { user } = useAuth();
@@ -71,14 +72,16 @@ function App() {
 
         {/* 🔹 Blog pages */}
         <Route path="/blogs" element={<Blogs />} />
-        <Route path="/blogs/smart-devices" element={<SmartDevicesBlog />} />
-        <Route path="/blogs/mobiles-tablets" element={<MobilesTabletsBlog />} />
-        <Route path="/blogs/women-fashion" element={<WomenFashionBlog />} />
-        <Route path="/blogs/men-fashion" element={<MenFashionBlog />} />
-        <Route path="/blogs/kids" element={<KidsBlog />} />
-        <Route path="/blogs/automotive" element={<AutomotiveBlog />} />
+        <Route path="/blogs/manfashionblog" element={<ManFashionBlog />} />
+        <Route path="/blogs/womanfashionblog" element={<WomanFashionBlog />} />
+        <Route path="/blogs/kidsblog" element={<KidsBlog />} />
+        <Route path="/blogs/smartdeviceblog" element={<SmartDeviceBlog />} />
+        <Route path="/blogs/mobilestabletsblog" element={<MobilesTabletsBlog />} />
+        <Route path="/blogs/automotiveblog" element={<AutomotiveBlog />} />
+
+        {/* ✅ dynamic category + blog post (by id) */}
         <Route path="/blogs/:category" element={<Category />} />
-        <Route path="/blogs/:category/:slug" element={<BlogPost />} />
+        <Route path="/blogs/:category/:id" element={<BlogPost />} />
 
         {/* 🔹 Search page */}
         <Route path="/search" element={<SearchResults />} />
@@ -107,9 +110,9 @@ function App() {
               <ManageProducts />
             </ProtectedRoute>
           }
-       
-       // 🔹 Admin-only dashboard pages 
         />
+
+        {/* 🔹 Admin-only dashboard pages */}
         <Route
           path="/dashboard/manage-accounts"
           element={
@@ -155,6 +158,14 @@ function App() {
           element={
             <ProtectedRoute roles={["admin"]}>
               <ManageBlogs />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/add-blogs"
+          element={
+            <ProtectedRoute roles={["admin"]}>
+              <AddBlogs />
             </ProtectedRoute>
           }
         />

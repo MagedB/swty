@@ -45,6 +45,9 @@ export default function Dashboard() {
             <Link to="/dashboard/manage-blogs" className="dashboard-btn">
               Manage Blogs
             </Link>
+             <Link to="/dashboard/add-blogs" className="dashboard-btn">
+              Add Blogs
+            </Link>
 
           </>
         )}

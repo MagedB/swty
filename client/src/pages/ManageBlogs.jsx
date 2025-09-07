@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
-import ReactQuill from "react-quill"; // ✅ WYSIWYG editor
-import "react-quill/dist/quill.snow.css"; // ✅ Quill styles
+import React, { useEffect, useState, useRef } from "react";
+import { Editor } from "@toast-ui/react-editor";
+import "@toast-ui/editor/dist/toastui-editor.css";
+import "./ManageBlogs.css";
 
 export default function ManageBlogs() {
   const [blogs, setBlogs] = useState([]);
@@ -14,6 +15,8 @@ export default function ManageBlogs() {
   });
   const [imageFile, setImageFile] = useState(null);
   const [showEditor, setShowEditor] = useState(false);
+
+  const editorRef = useRef();
 
   // Fetch blogs
   const fetchBlogs = async () => {
@@ -30,22 +33,14 @@ export default function ManageBlogs() {
     fetchBlogs();
   }, []);
 
-  // Handle text input
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Handle Quill content change
-  const handleContentChange = (value) => {
-    setForm({ ...form, content: value });
-  };
-
-  // Handle file input
   const handleFileChange = (e) => {
     setImageFile(e.target.files[0]);
   };
 
-  // Open editor for new blog
   const handleNewBlog = () => {
     setEditingBlog(null);
     setForm({ title: "", slug: "", content: "", category: "", author: "" });
@@ -53,7 +48,6 @@ export default function ManageBlogs() {
     setShowEditor(true);
   };
 
-  // Open editor for editing
   const handleEdit = (blog) => {
     setEditingBlog(blog);
     setForm({
@@ -67,12 +61,17 @@ export default function ManageBlogs() {
     setShowEditor(true);
   };
 
-  // Submit new or updated blog
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const formData = new FormData();
       Object.keys(form).forEach((key) => formData.append(key, form[key]));
+
+      // Get content from Toast UI Editor
+      if (editorRef.current) {
+        formData.set("content", editorRef.current.getInstance().getHTML());
+      }
+
       if (imageFile) formData.append("image", imageFile);
 
       const url = editingBlog
@@ -91,7 +90,6 @@ export default function ManageBlogs() {
     }
   };
 
-  // Delete blog
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this blog?")) return;
     try {
@@ -177,13 +175,21 @@ export default function ManageBlogs() {
               required
             />
 
-            {/* ✅ React Quill Editor */}
-            <ReactQuill
-              theme="snow"
-              value={form.content}
-              onChange={handleContentChange}
-              placeholder="Write your blog content here..."
-              style={{ height: "300px", marginBottom: "20px" }}
+            {/* Toast UI Editor */}
+            <Editor
+              ref={editorRef}
+              initialValue={form.content}
+              previewStyle="vertical"
+              height="400px"
+              initialEditType="wysiwyg"
+              useCommandShortcut={true}
+              toolbarItems={[
+                ["heading", "bold", "italic", "strike"],
+                ["hr", "quote"],
+                ["ul", "ol", "task"],
+                ["table", "link", "image"],
+                ["code", "codeblock"],
+              ]}
             />
 
             <select

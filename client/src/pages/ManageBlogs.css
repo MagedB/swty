@@ -1,0 +1,26 @@
+/* Input boxes (title, slug, author) */
+.blog-editor input[type="text"],
+.blog-editor input[type="file"],
+.blog-editor select {
+  width: 100%;          /* full width */
+  padding: 12px 15px;   /* bigger padding inside the box */
+  font-size: 1.1rem;    /* larger text */
+  margin-bottom: 20px;  /* space between boxes */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+/* Specifically increase space for Category select box */
+.blog-editor select[name="category"] {
+  margin-bottom: 30px;  /* more space below */
+}
+
+/* Submit and Cancel buttons */
+.blog-editor button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  margin-right: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}

@@ -27,8 +27,9 @@ CREATE TABLE products (
   price NUMERIC(10,2) NOT NULL CHECK (price >= 0),
   category TEXT NOT NULL,
   image TEXT,
+  created_at TIMESTAMP DEFAULT NOW(),
   visible BOOLEAN DEFAULT TRUE,
-  created_at TIMESTAMP DEFAULT NOW()
+  sub_category VARCHAR(100) NOT NULL DEFAULT ''
 );
 
 -- =====================

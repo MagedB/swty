@@ -8,7 +8,7 @@
 
 /* Table styling */
 .styled-table {
-  width: 100%;
+  width: 110%;
   border-collapse: collapse;
   margin-top: 20px;
   font-size: 14px;
@@ -126,7 +126,7 @@ button:nth-of-type(2) {
 }
 
 .image-preview img {
-  max-width: 100%;
+  max-width: 50%;
   max-height: 300px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -176,7 +176,7 @@ button:nth-of-type(2) {
 .modal-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 5px;
 }
 
 .modal-actions .btn-edit {

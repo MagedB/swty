@@ -31,7 +31,7 @@ export default function WomanFashion() {
 
   return (
     <div className="products-page">
-      <h1>Woman Fashion</h1>
+      <h1>Women Fashion</h1>
       <div className="products-list">
         {products.map((p) => (
           <div key={p.id} className="product-card">

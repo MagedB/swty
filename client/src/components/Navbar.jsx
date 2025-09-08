@@ -86,7 +86,7 @@ function Navbar() {
           <Link to="/">Home</Link>
           <Link to="/smart-devices">Smart Devices</Link>
           <Link to="/mobiles-tablets">Mobiles Tablets</Link>
-          <Link to="/woman-fashion">Woman Fashion</Link>
+          <Link to="/woman-fashion">Women Fashion</Link>
           <Link to="/man-fashion">Man Fashion</Link>
           <Link to="/kids">Kids</Link>
           <Link to="/automotive">Automotive</Link>

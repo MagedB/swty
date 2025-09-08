@@ -5,6 +5,46 @@ export default function ManageProducts() {
   const [products, setProducts] = useState([]);
   const [editProduct, setEditProduct] = useState(null);
 
+  // ✅ category → subcategory map (same as AddProduct.jsx)
+  const subCategories = {
+    smart_devices: [
+      "Pc and Laptops",
+      "Computer Accessories",
+      "Smart Homes Devices",
+      "Cameras",
+      "Video Games",
+    ],
+    mobiles_tablets: [
+      "Mobile Phones",
+      "Tablets",
+      "Chargers and PowerBanks",
+      "Cases and Covers",
+      "Accessories",
+    ],
+    woman_fashion: [
+      "Clothes",
+      "Shoes and Bags",
+      "Beauty and Makeup",
+      "Gold and jewelry",
+      "Accessories and Perfumes",
+    ],
+    man_fashion: [
+      "Clothes",
+      "Shoes and Bags",
+      "HomeWear",
+      "Fitnes and GymAccessories",
+      "Accessories and Perfumes",
+    ],
+    kids: ["Boys Fashion", "Girls Fashion", "Toys", "Kids School", "Babys"],
+    automotive: [
+      "Auto Tools",
+      "Cars Parts",
+      "Motorcycle Parts",
+      "Oils and CarCare",
+      "Wheels and Battery",
+    ],
+  };
+
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -62,6 +102,7 @@ export default function ManageProducts() {
       formData.append("description", editProduct.description);
       formData.append("price", editProduct.price);
       formData.append("category", editProduct.category);
+      formData.append("sub_category", editProduct.sub_category || "");
       if (editProduct.imageFile) {
         formData.append("image", editProduct.imageFile);
       }
@@ -92,6 +133,7 @@ export default function ManageProducts() {
             <th>Description</th>
             <th>Price ($)</th>
             <th>Category</th>
+            <th>Sub Category</th>
             <th>Image</th>
             <th>Created At</th>
             <th>Visible</th>
@@ -106,6 +148,7 @@ export default function ManageProducts() {
               <td>{p.description}</td>
               <td>{p.price}</td>
               <td>{p.category}</td>
+              <td>{p.sub_category || "—"}</td>
               <td>
                 {p.image ? (
                   <img
@@ -141,65 +184,149 @@ export default function ManageProducts() {
         </tbody>
       </table>
 
-      {/* Edit Modal */}
+      {/* ✅ Improved Edit Modal */}
       {editProduct && (
         <div className="modal-overlay">
           <div className="modal">
             <h3>Edit Product</h3>
-            <input
-              type="text"
-              value={editProduct.name}
-              onChange={(e) =>
-                setEditProduct({ ...editProduct, name: e.target.value })
-              }
-              placeholder="Name"
-            />
-            <textarea
-              value={editProduct.description}
-              onChange={(e) =>
-                setEditProduct({
-                  ...editProduct,
-                  description: e.target.value,
-                })
-              }
-              placeholder="Description"
-            />
-            <input
-              type="number"
-              value={editProduct.price}
-              onChange={(e) =>
-                setEditProduct({ ...editProduct, price: e.target.value })
-              }
-              placeholder="Price"
-            />
-            <input
-              type="text"
-              value={editProduct.category}
-              onChange={(e) =>
-                setEditProduct({ ...editProduct, category: e.target.value })
-              }
-              placeholder="Category"
-            />
-            <input
-              type="file"
-              onChange={(e) =>
-                setEditProduct({
-                  ...editProduct,
-                  imageFile: e.target.files[0],
-                })
-              }
-            />
-            <div className="modal-actions">
-              <button className="btn-edit" onClick={handleEditSave}>
-                Save
-              </button>
-              <button
-                className="btn-delete"
-                onClick={() => setEditProduct(null)}
-              >
-                Cancel
-              </button>
-            </div>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleEditSave();
+              }}
+              className="form-box"
+            >
+              <div className="form-group">
+                <label>Name:</label>
+                <input
+                  type="text"
+                  value={editProduct.name}
+                  onChange={(e) =>
+                    setEditProduct({ ...editProduct, name: e.target.value })
+                  }
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Description:</label>
+                <textarea
+                  value={editProduct.description}
+                  onChange={(e) =>
+                    setEditProduct({
+                      ...editProduct,
+                      description: e.target.value,
+                    })
+                  }
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Price:</label>
+                <input
+                  type="number"
+                  value={editProduct.price}
+                  onChange={(e) =>
+                    setEditProduct({ ...editProduct, price: e.target.value })
+                  }
+                  step="0.01"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Main Category:</label>
+                <select
+                  value={editProduct.category}
+                  onChange={(e) =>
+                    setEditProduct({
+                      ...editProduct,
+                      category: e.target.value,
+                      sub_category: "",
+                    })
+                  }
+                >
+                  <option value="smart_devices">Smart Devices</option>
+                  <option value="mobiles_tablets">Mobiles Tablets</option>
+                  <option value="woman_fashion">Woman Fashion</option>
+                  <option value="man_fashion">Man Fashion</option>
+                  <option value="kids">Kids</option>
+                  <option value="automotive">Automotive</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Sub Category:</label>
+                <select
+                  value={editProduct.sub_category || ""}
+                  onChange={(e) =>
+                    setEditProduct({
+                      ...editProduct,
+                      sub_category: e.target.value,
+                    })
+                  }
+                >
+                  <option value="">-- Select Sub Category --</option>
+                  {subCategories[editProduct.category]?.map((sub) => (
+                    <option key={sub} value={sub}>
+                      {sub}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Image:</label>
+                <div className="image-preview">
+                  {editProduct.imageFile ? (
+                    <img
+                      src={URL.createObjectURL(editProduct.imageFile)}
+                      alt="Preview"
+                      style={{
+                        width: "100px",
+                        height: "100px",
+                        objectFit: "cover",
+                        borderRadius: "6px",
+                      }}
+                    />
+                  ) : editProduct.image ? (
+                    <img
+                      src={`http://localhost:5000/uploads/${editProduct.image}`}
+                      alt="Current"
+                      style={{
+                        width: "100px",
+                        height: "100px",
+                        objectFit: "cover",
+                        borderRadius: "6px",
+                      }}
+                    />
+                  ) : (
+                    <p>No image selected</p>
+                  )}
+                </div>
+                <input
+                  type="file"
+                  onChange={(e) =>
+                    setEditProduct({
+                      ...editProduct,
+                      imageFile: e.target.files[0],
+                    })
+                  }
+                />
+              </div>
+
+              <div className="modal-actions">
+                <button type="submit" className="btn-edit">
+                  Save
+                </button>
+                <button
+                  type="button"
+                  className="btn-delete"
+                  onClick={() => setEditProduct(null)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

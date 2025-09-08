@@ -136,7 +136,7 @@ export default function Home() {
           "color-smart"
         )}
         {renderCategory("Mobiles Tablets", featured.mobiles_tablets, "mobiles_tablets", "color-auto")}
-        {renderCategory("Woman Fashion", featured.woman_fashion, "woman_fashion", "color-fashion")}
+        {renderCategory("Women Fashion", featured.woman_fashion, "woman_fashion", "color-fashion")}
         {renderCategory("Man Fashion", featured.man_fashion, "man_fashion", "color-smart")}
         {renderCategory("Kids", featured.kids, "kids", "color-fashion")}
         {renderCategory(

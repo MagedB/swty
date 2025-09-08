@@ -7,11 +7,55 @@ export default function AddProduct() {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("smart_devices");
+  const [subCategory, setSubCategory] = useState("");
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [products, setProducts] = useState([]);
-  const [editProduct, setEditProduct] = useState(null); // ✅ modal state
+  const [editProduct, setEditProduct] = useState(null);
+  const [editImage, setEditImage] = useState(null);
+  const [editPreview, setEditPreview] = useState(null);
+
   const navigate = useNavigate();
+
+  // ✅ category → subcategory map
+  const subCategories = {
+    smart_devices: [
+      "Pc and Laptops",
+      "Computer Accessories",
+      "Smart Homes Devices",
+      "Cameras",
+      "Video Games",
+    ],
+    mobiles_tablets: [
+      "Mobile Phones",
+      "Tablets",
+      "Chargers and PowerBanks",
+      "Cases and Covers",
+      "Accessories",
+    ],
+    woman_fashion: [
+      "Clothes",
+      "Shoes and Bags",
+      "Beauty and Makeup",
+      "Gold and jewelry",
+      "Accessories and Perfumes",
+    ],
+    man_fashion: [
+      "Clothes",
+      "Shoes and Bags",
+      "HomeWear",
+      "Fitnes and GymAccessories",
+      "Accessories and Perfumes",
+    ],
+    kids: ["Boys Fashion", "Girls Fashion", "Toys", "Kids School", "Babys"],
+    automotive: [
+      "Auto Tools",
+      "Cars Parts",
+      "Motorcycle Parts",
+      "Oils and CarCare",
+      "Wheels and Battery",
+    ],
+  };
 
   // ✅ Check user role
   useEffect(() => {
@@ -32,8 +76,14 @@ export default function AddProduct() {
       const res = await fetch("http://localhost:5000/api/products");
       if (!res.ok) throw new Error("Failed to fetch products");
       const data = await res.json();
-      // latest first, keep only last 50
-      setProducts(data.sort((a, b) => b.id - a.id).slice(0, 50));
+
+      // 🔑 Normalize snake_case → camelCase
+      const normalized = data.map((p) => ({
+        ...p,
+        subCategory: p.sub_category,
+      }));
+
+      setProducts(normalized.sort((a, b) => b.id - a.id).slice(0, 50));
     } catch (err) {
       console.error("Error fetching products:", err);
     }
@@ -48,7 +98,7 @@ export default function AddProduct() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name || !description || !price || !category || !image) {
+    if (!name || !description || !price || !category || !subCategory || !image) {
       alert("Please fill all fields and select an image");
       return;
     }
@@ -59,29 +109,27 @@ export default function AddProduct() {
       formData.append("description", description);
       formData.append("price", price);
       formData.append("category", category);
+      formData.append("sub_category", subCategory); // ✅ DB field
       formData.append("image", image);
 
       const token = localStorage.getItem("token");
 
       const res = await fetch("http://localhost:5000/api/products", {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
 
       const data = await res.json();
 
-      if (!res.ok) {
-        throw new Error(data.message || "Failed to add product");
-      }
+      if (!res.ok) throw new Error(data.message || "Failed to add product");
 
       alert("✅ Product added successfully!");
       setName("");
       setDescription("");
       setPrice("");
       setCategory("smart_devices");
+      setSubCategory("");
       setImage(null);
       setPreview(null);
       fetchProducts();
@@ -91,30 +139,44 @@ export default function AddProduct() {
     }
   };
 
+  const handleEditImageChange = (e) => {
+    const file = e.target.files[0];
+    setEditImage(file);
+    setEditPreview(file ? URL.createObjectURL(file) : null);
+  };
+
   const handleEditSave = async () => {
     if (!editProduct) return;
+
     try {
       const token = localStorage.getItem("token");
+      const formData = new FormData();
+      formData.append("name", editProduct.name);
+      formData.append("description", editProduct.description);
+      formData.append("price", editProduct.price);
+      formData.append("category", editProduct.category);
+      formData.append("sub_category", editProduct.subCategory || "");
+
+      if (editImage) {
+        formData.append("image", editImage);
+      }
+
       const res = await fetch(
         `http://localhost:5000/api/products/${editProduct.id}`,
         {
           method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            name: editProduct.name,
-            description: editProduct.description,
-            price: editProduct.price,
-            category: editProduct.category,
-          }),
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData,
         }
       );
 
       if (!res.ok) throw new Error("Failed to update product");
-      setEditProduct(null); // close modal
-      fetchProducts(); // refresh
+
+      alert("✅ Product updated successfully!");
+      setEditProduct(null);
+      setEditImage(null);
+      setEditPreview(null);
+      fetchProducts();
     } catch (err) {
       console.error(err);
       alert("❌ Failed to update product");
@@ -125,7 +187,6 @@ export default function AddProduct() {
     <div className="manage-container">
       <h1 className="table-title">Add Product</h1>
 
-      {/* Form + Image side by side */}
       <div className="form-container">
         {/* Left - Form */}
         <form onSubmit={handleSubmit} className="form-box">
@@ -156,10 +217,13 @@ export default function AddProduct() {
             />
           </div>
           <div className="form-group">
-            <label>Category:</label>
+            <label>Main Category:</label>
             <select
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(e) => {
+                setCategory(e.target.value);
+                setSubCategory("");
+              }}
             >
               <option value="smart_devices">Smart Devices</option>
               <option value="mobiles_tablets">Mobiles Tablets</option>
@@ -167,6 +231,21 @@ export default function AddProduct() {
               <option value="man_fashion">Man Fashion</option>
               <option value="kids">Kids</option>
               <option value="automotive">Automotive</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label>Sub Category:</label>
+            <select
+              value={subCategory}
+              onChange={(e) => setSubCategory(e.target.value)}
+              required
+            >
+              <option value="">-- Select Sub Category --</option>
+              {subCategories[category]?.map((sub) => (
+                <option key={sub} value={sub}>
+                  {sub}
+                </option>
+              ))}
             </select>
           </div>
           <div className="form-group">
@@ -198,13 +277,15 @@ export default function AddProduct() {
             <th>Description</th>
             <th>Price ($)</th>
             <th>Category</th>
+            <th>Sub Category</th>
+            <th>Image</th>
             <th>Edit</th>
           </tr>
         </thead>
         <tbody>
           {products.length === 0 && (
             <tr>
-              <td colSpan="6" style={{ textAlign: "center" }}>
+              <td colSpan="8" style={{ textAlign: "center" }}>
                 No products found
               </td>
             </tr>
@@ -216,6 +297,23 @@ export default function AddProduct() {
               <td>{p.description}</td>
               <td>${Number(p.price).toFixed(2)}</td>
               <td>{p.category}</td>
+              <td>{p.subCategory || "-"}</td>
+              <td>
+                {p.image ? (
+                  <img
+                    src={`http://localhost:5000/uploads/${p.image}`}
+                    alt={p.name}
+                    style={{
+                      width: "60px",
+                      height: "60px",
+                      objectFit: "cover",
+                      borderRadius: "6px",
+                    }}
+                  />
+                ) : (
+                  "—"
+                )}
+              </td>
               <td>
                 <button className="btn-edit" onClick={() => setEditProduct(p)}>
                   Edit
@@ -246,10 +344,7 @@ export default function AddProduct() {
               <textarea
                 value={editProduct.description}
                 onChange={(e) =>
-                  setEditProduct({
-                    ...editProduct,
-                    description: e.target.value,
-                  })
+                  setEditProduct({ ...editProduct, description: e.target.value })
                 }
               />
             </div>
@@ -264,11 +359,15 @@ export default function AddProduct() {
               />
             </div>
             <div className="form-group">
-              <label>Category:</label>
+              <label>Main Category:</label>
               <select
                 value={editProduct.category}
                 onChange={(e) =>
-                  setEditProduct({ ...editProduct, category: e.target.value })
+                  setEditProduct({
+                    ...editProduct,
+                    category: e.target.value,
+                    subCategory: "",
+                  })
                 }
               >
                 <option value="smart_devices">Smart Devices</option>
@@ -279,13 +378,56 @@ export default function AddProduct() {
                 <option value="automotive">Automotive</option>
               </select>
             </div>
+            <div className="form-group">
+              <label>Sub Category:</label>
+              <select
+                value={editProduct.subCategory || ""}
+                onChange={(e) =>
+                  setEditProduct({
+                    ...editProduct,
+                    subCategory: e.target.value,
+                  })
+                }
+              >
+                <option value="">-- Select Sub Category --</option>
+                {subCategories[editProduct.category]?.map((sub) => (
+                  <option key={sub} value={sub}>
+                    {sub}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="form-group">
+              <label>Image:</label>
+              <input
+                type="file"
+                onChange={handleEditImageChange}
+                accept="image/*"
+              />
+              <div className="image-preview">
+                {editPreview ? (
+                  <img src={editPreview} alt="Preview" />
+                ) : editProduct.image ? (
+                  <img
+                    src={`http://localhost:5000/uploads/${editProduct.image}`}
+                    alt={editProduct.name}
+                  />
+                ) : (
+                  <p>No image</p>
+                )}
+              </div>
+            </div>
             <div className="modal-actions">
               <button className="btn-edit" onClick={handleEditSave}>
                 Save
               </button>
               <button
                 className="btn-delete"
-                onClick={() => setEditProduct(null)}
+                onClick={() => {
+                  setEditProduct(null);
+                  setEditImage(null);
+                  setEditPreview(null);
+                }}
               >
                 Cancel
               </button>

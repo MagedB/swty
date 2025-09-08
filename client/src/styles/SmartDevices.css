@@ -1,0 +1,148 @@
+/* src/styles/SmartDevices.css */
+
+.smartdevices-page {
+  display: grid;
+  grid-template-columns: 220px 1fr 220px;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* ===== Left Sidebar (Subcategories) ===== */
+.smartdevices-sidebar {
+  background: #f8f8f8;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.smartdevices-sidebar h2 {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.smartdevices-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.smartdevices-sidebar ul li {
+  margin: 8px 0;
+}
+
+.smartdevices-sidebar ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+.smartdevices-sidebar ul li a:hover {
+  color: #007bff;
+}
+
+/* ===== Right Sidebar (Other Categories) ===== */
+.smartdevices-right-sidebar {
+  background: #f8f8f8;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.smartdevices-right-sidebar h3 {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.smartdevices-right-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.smartdevices-right-sidebar ul li {
+  margin: 8px 0;
+}
+
+.smartdevices-right-sidebar ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+.smartdevices-right-sidebar ul li a:hover {
+  color: #007bff;
+}
+
+/* ===== Main Hub Content ===== */
+.smartdevices-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.smartdevices-content h2 {
+  margin-bottom: 20px;
+  font-size: 22px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 8px;
+}
+
+/* Subcategory blocks in the hub */
+.subcategory-block {
+  margin-bottom: 30px;
+}
+
+.subcategory-block h3 {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 15px;
+}
+
+.product-card {
+  background: #fafafa;
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+}
+
+.product-card img {
+  width: 100%;
+  height: 140px;
+  object-fit: contain;
+  margin-bottom: 8px;
+}
+
+.product-card h4 {
+  font-size: 15px;
+  margin: 6px 0;
+}
+
+.price {
+  font-weight: bold;
+  color: #007bff;
+}
+
+/* See More link */
+.see-more {
+  display: inline-block;
+  margin-top: 8px;
+  color: #007bff;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.see-more:hover {
+  text-decoration: underline;
+}

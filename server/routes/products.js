@@ -64,31 +64,37 @@ router.post(
 ================================ */
 router.get("/", async (req, res) => {
   try {
-    const { category, all } = req.query;
+    const { category, sub_category, all } = req.query;
 
     let query = `
       SELECT id, name, description, price, category, sub_category, image, visible, created_at
       FROM products
     `;
     const values = [];
+    let conditions = [];
 
     // Public: only visible products
     if (!all) {
-      query += ` WHERE visible = true`;
+      conditions.push(`visible = true`);
     }
 
     // Add category filter
     if (category) {
-      if (!all) {
-        query += ` AND category = $1`;
-        values.push(category);
-      } else {
-        query += ` WHERE category = $1`;
-        values.push(category);
-      }
+      values.push(category);
+      conditions.push(`category = $${values.length}`);
     }
 
-    query += ` ORDER BY id DESC`;
+    // Add sub_category filter
+    if (sub_category) {
+      values.push(sub_category);
+      conditions.push(`sub_category = $${values.length}`);
+    }
+
+    if (conditions.length > 0) {
+      query += " WHERE " + conditions.join(" AND ");
+    }
+
+    query += " ORDER BY id DESC";
 
     const result = await pool.query(query, values);
     res.json(result.rows);

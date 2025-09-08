@@ -19,6 +19,14 @@ import Register from "./pages/Register";
 import Orders from "./pages/Orders";
 import SearchResults from "./pages/SearchResults";
 
+// SmartDevices Sub Pages
+import Cameras from "./pages/SmartDevices/Cameras";
+import PcandLaptops from "./pages/SmartDevices/PcandLaptops";
+import SmartHomeDevices from "./pages/SmartDevices/SmartHomesDevices";
+import ComputerAccessories from "./pages/SmartDevices/ComputerAccessories";
+import VideoGames from "./pages/SmartDevices/VideoGames"; 
+
+
 // Blog Pages
 import Blogs from "./pages/blogs/Blogs";
 import ManFashionBlog from "./pages/blogs/manfashionblog";
@@ -58,7 +66,14 @@ function App() {
       <Routes>
         {/* 🔹 Public pages */}
         <Route path="/" element={<Home />} />
-        <Route path="/smart-devices" element={<SmartDevices />} />
+        <Route path="/smart-devices" element={<SmartDevices />}>
+          {/* Sub category nested routes */}
+          <Route path="cameras" element={<Cameras />} />
+          <Route path="/smart-devices/pcandlaptops" element={<PcandLaptops />} />
+          <Route path="/smart-devices/smarthomesdevices" element={<SmartHomeDevices />} />
+          <Route path="/smart-devices/computeraccessories" element={<ComputerAccessories />} />
+          <Route path="/smart-devices/videogames" element={<VideoGames />} />  
+        </Route>
         <Route path="/mobiles-tablets" element={<MobilesTablets />} />
         <Route path="/woman-fashion" element={<WomanFashion />} />
         <Route path="/man-fashion" element={<ManFashion />} />
@@ -85,6 +100,8 @@ function App() {
 
         {/* 🔹 Search page */}
         <Route path="/search" element={<SearchResults />} />
+
+        
 
         {/* 🔹 Dashboard pages (admin & moderator) */}
         <Route

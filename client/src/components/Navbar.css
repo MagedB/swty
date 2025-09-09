@@ -42,7 +42,7 @@
 .top-right {
   display: flex;
   align-items: center;
-  gap: 35px;
+  gap: 25px;
 }
 
 /* 🔹 Brand Logo */
@@ -84,13 +84,13 @@
 .main-left {
   display: flex;
   align-items: center;
-  gap: 45px;
+  gap: 35px;
 }
 
 .main-right {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 45px;
 }
 
 /* 🔎 Search Bar */
@@ -128,7 +128,7 @@
 }
 
 .search-btn:hover {
-  color: #3498db;
+  color: #000000;
   transform: scale(1.2);
 }
 

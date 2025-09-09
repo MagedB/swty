@@ -7,6 +7,18 @@ export default function SmartDevices() {
   const [products, setProducts] = useState({});
   const location = useLocation();
 
+  const addToCart = (product) => {
+    const savedCart = localStorage.getItem("cart");
+    const cart = savedCart ? JSON.parse(savedCart) : [];
+    if (!cart.find((item) => item.id === product.id)) {
+      cart.push(product);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert(`${product.name} added to cart!`);
+    } else {
+      alert(`${product.name} is already in the cart`);
+    }
+  };
+
   useEffect(() => {
     // Only fetch hub data if on the main hub page (/smart-devices),
     // not when inside a subcategory (/smart-devices/cameras, etc.)
@@ -60,6 +72,7 @@ export default function SmartDevices() {
         {isHubPage ? (
           <>
             <h2>Latest Smart Devices</h2>
+            
             {Object.keys(products).map((sub) => (
               <div key={sub} className="subcategory-block">
                 <h3>{sub}</h3>
@@ -73,13 +86,24 @@ export default function SmartDevices() {
                         />
                         <h4>{product.name}</h4>
                         <p className="price">EGP {product.price}</p>
+                        <button
+                          className="add-to-cart-btn"
+                          onClick={() => addToCart(product)}
+                        >
+                          Add to Cart
+                        </button>
                       </div>
                     ))
                   ) : (
                     <p>No products yet.</p>
                   )}
                 </div>
-                <Link to={`/smart-devices/${sub.toLowerCase()}`} className="see-more">
+                <Link
+                  to={`/smart-devices/${encodeURIComponent(
+                   sub.replace(/\s+/g, "").toLowerCase()
+            )}`}
+                  className="see-more"
+                >
                   See all {sub}
                 </Link>
               </div>

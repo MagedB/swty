@@ -20,6 +20,18 @@ export default function PcandLaptops() {
     fetchProducts();
   }, []);
 
+  const addToCart = (product) => {
+    const savedCart = localStorage.getItem("cart");
+    const cart = savedCart ? JSON.parse(savedCart) : [];
+    if (!cart.find((item) => item.id === product.id)) {
+      cart.push(product);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert(`${product.name} added to cart!`);
+    } else {
+      alert(`${product.name} is already in the cart`);
+    }
+  };
+
   return (
     <div className="page-container">
       {/* Left Sidebar */}
@@ -51,6 +63,12 @@ export default function PcandLaptops() {
                 />
                 <h4>{product.name}</h4>
                 <p className="price">EGP {product.price}</p>
+                <button
+                  className="add-to-cart-btn"
+                  onClick={() => addToCart(product)}
+                >
+                  Add to Cart
+                </button>
               </div>
             ))}
           </div>

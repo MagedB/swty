@@ -44,7 +44,7 @@ export default function Blogs() {
 
   return (
     <div className="blogs-container">
-      <h1>Explore Blog Categories</h1>
+      <h1>šwty Blog Categories</h1>
 
       {Object.keys(blogsByCategory).map((categorySlug) => {
         const blogs = blogsByCategory[categorySlug];

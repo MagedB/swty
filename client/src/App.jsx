@@ -24,8 +24,21 @@ import Cameras from "./pages/SmartDevices/Cameras";
 import PcandLaptops from "./pages/SmartDevices/PcandLaptops";
 import SmartHomeDevices from "./pages/SmartDevices/SmartHomesDevices";
 import ComputerAccessories from "./pages/SmartDevices/ComputerAccessories";
-import VideoGames from "./pages/SmartDevices/VideoGames"; 
+import VideoGames from "./pages/SmartDevices/VideoGames";
 
+// MobilesTablets Sub Pages
+import Accessories from "./pages/MobilesTablets/Accessories";
+import CasesandCovers from "./pages/MobilesTablets/CasesandCovers";
+import ChargersandPowerBanks from "./pages/MobilesTablets/ChargersandPowerBanks";
+import MobilePhones from "./pages/MobilesTablets/MobilePhones";
+import Tablets from "./pages/MobilesTablets/Tablets";
+
+// Automotive Sub Pages
+import AutoTools from "./pages/Automotive/AutoTools";
+import CarsParts from "./pages/Automotive/CarsParts";
+import MotorcycleParts from "./pages/Automotive/MotorcycleParts";
+import OilsandCarCare from "./pages/Automotive/OilsandCarCare";
+import WheelsandBattery from "./pages/Automotive/WheelsandBattery";
 
 // Blog Pages
 import Blogs from "./pages/blogs/Blogs";
@@ -35,8 +48,11 @@ import KidsBlog from "./pages/blogs/kidsblog";
 import SmartDeviceBlog from "./pages/blogs/smartdeviceblog";
 import MobilesTabletsBlog from "./pages/blogs/mobilestabletsblog";
 import AutomotiveBlog from "./pages/blogs/automotiveblog";
-import Category from "./pages/blogs/Category"; 
+import Category from "./pages/blogs/Category";
 import BlogPost from "./pages/blogs/BlogPost";
+
+// Blog Pages
+import Books from "./pages/Books.jsx";
 
 // Dashboard + Management Pages
 import Dashboard from "./pages/Dashboard";
@@ -47,13 +63,13 @@ import ManageOrders from "./pages/ManageOrders";
 import ManageDelivery from "./pages/ManageDelivery";
 import ManageFinance from "./pages/ManageFinance";
 import SocialMedia from "./pages/SocialMedia";
-import ManageBlogs from "./pages/ManageBlogs"; 
-import AddBlogs from "./pages/AddBlogs"; 
+import ManageBlogs from "./pages/ManageBlogs";
+import AddBlogs from "./pages/AddBlogs";
+import BookDetails from "./pages/BookDetails";
 
 function App() {
   const { user } = useAuth();
 
-  // ✅ Helper for protecting routes
   const ProtectedRoute = ({ children, roles }) => {
     if (!user) return <Navigate to="/login" replace />;
     if (roles && !roles.includes(user.role)) return <Navigate to="/" replace />;
@@ -64,17 +80,37 @@ function App() {
     <>
       <Navbar />
       <Routes>
-        {/* 🔹 Public pages */}
+        {/* Public pages */}
         <Route path="/" element={<Home />} />
+
+        {/* SmartDevices hub and subpages */}
         <Route path="/smart-devices" element={<SmartDevices />}>
-          {/* Sub category nested routes */}
           <Route path="cameras" element={<Cameras />} />
-          <Route path="/smart-devices/pcandlaptops" element={<PcandLaptops />} />
-          <Route path="/smart-devices/smarthomesdevices" element={<SmartHomeDevices />} />
-          <Route path="/smart-devices/computeraccessories" element={<ComputerAccessories />} />
-          <Route path="/smart-devices/videogames" element={<VideoGames />} />  
+          <Route path="pcandlaptops" element={<PcandLaptops />} />
+          <Route path="smarthomesdevices" element={<SmartHomeDevices />} />
+          <Route path="computeraccessories" element={<ComputerAccessories />} />
+          <Route path="videogames" element={<VideoGames />} />
         </Route>
-        <Route path="/mobiles-tablets" element={<MobilesTablets />} />
+
+        {/* MobilesTablets hub and subpages */}
+        <Route path="/mobiles-tablets" element={<MobilesTablets />}>
+          <Route path="Accessories" element={<Accessories />} />
+          <Route path="CasesandCovers" element={<CasesandCovers />} />
+          <Route path="ChargersandPowerBanks" element={<ChargersandPowerBanks />} />
+          <Route path="MobilePhones" element={<MobilePhones />} />
+          <Route path="Tablets" element={<Tablets />} />
+        </Route>
+
+        {/* Automotive hub and subpages */}
+        <Route path="/Automotive" element={<Automotive />}>
+          <Route path="AutoTools" element={<AutoTools />} />
+          <Route path="CarsParts" element={<CarsParts />} />
+          <Route path="MotorcycleParts" element={<MotorcycleParts />} />
+          <Route path="OilsandCarCare" element={<OilsandCarCare />} />
+          <Route path="WheelsandBattery" element={<WheelsandBattery />} />
+        </Route>
+
+        {/* Other main pages */}
         <Route path="/woman-fashion" element={<WomanFashion />} />
         <Route path="/man-fashion" element={<ManFashion />} />
         <Route path="/kids" element={<Kids />} />
@@ -85,7 +121,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/orders" element={<Orders />} />
 
-        {/* 🔹 Blog pages */}
+        {/* Blog pages */}
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/blogs/manfashionblog" element={<ManFashionBlog />} />
         <Route path="/blogs/womanfashionblog" element={<WomanFashionBlog />} />
@@ -93,17 +129,17 @@ function App() {
         <Route path="/blogs/smartdeviceblog" element={<SmartDeviceBlog />} />
         <Route path="/blogs/mobilestabletsblog" element={<MobilesTabletsBlog />} />
         <Route path="/blogs/automotiveblog" element={<AutomotiveBlog />} />
-
-        {/* ✅ dynamic category + blog post (by id) */}
         <Route path="/blogs/:category" element={<Category />} />
         <Route path="/blogs/:category/:id" element={<BlogPost />} />
 
-        {/* 🔹 Search page */}
+        {/* Books page */}
+        <Route path="/books" element={<Books />} />
+        <Route path="/books/:id" element={<BookDetails />} />
+
+        {/* Search */}
         <Route path="/search" element={<SearchResults />} />
 
-        
-
-        {/* 🔹 Dashboard pages (admin & moderator) */}
+        {/* Dashboard pages */}
         <Route
           path="/dashboard"
           element={
@@ -129,7 +165,7 @@ function App() {
           }
         />
 
-        {/* 🔹 Admin-only dashboard pages */}
+        {/* Admin-only dashboard pages */}
         <Route
           path="/dashboard/manage-accounts"
           element={
@@ -187,7 +223,7 @@ function App() {
           }
         />
 
-        {/* 🔹 Catch-all redirect */}
+        {/* Catch-all */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>

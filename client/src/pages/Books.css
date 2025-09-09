@@ -1,0 +1,309 @@
+.books-container {
+  padding: 20px;
+  background-color: #f9f5f2; /* soft background */
+  font-family: Arial, sans-serif;
+}
+
+.books-container h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #ff9800;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Search */
+.book-search-form {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.book-search-form input {
+  width: 50%;
+  padding: 12px 15px;
+  font-size: 1rem;
+  border: 2px solid #ddd;
+  border-radius: 5px 0 0 5px;
+  outline: none;
+}
+
+.book-search-form button {
+  padding: 12px 20px;
+  border: none;
+  background-color: #ff9800;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 0 5px 5px 0;
+}
+
+.book-search-form button:hover {
+  background-color: #e68900;
+}
+
+/* Books Grid - professional style */
+.books-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Book Card */
+.book-card {
+  flex: 0 0 23%; /* ~4 per row */
+  max-width: 23%;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+}
+
+.book-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.book-info {
+  padding: 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.book-info h3 {
+  font-size: 1.1rem;
+  margin-bottom: 5px;
+  flex: 0;
+}
+
+.book-author {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.book-price {
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 5px;
+}
+
+.book-rating {
+  color: #ff9800;
+  margin-bottom: 5px;
+}
+
+.book-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.add-cart-btn,
+.wishlist-btn {
+  flex: 1;
+  margin: 2px;
+  padding: 8px;
+  font-size: 0.8rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.add-cart-btn {
+  background-color: #ff9800;
+  color: white;
+}
+
+.add-cart-btn:hover {
+  background-color: #e68900;
+}
+
+.wishlist-btn {
+  background-color: #f1f1f1;
+  color: #ff9800;
+}
+
+.wishlist-btn:hover {
+  background-color: #ffecd5;
+}
+
+/* Hover Overlay for Book Details */
+.book-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  color: rgb(161, 154, 154);
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+  transition: opacity 0.3s;
+}
+
+.book-card:hover .book-hover {
+  opacity: 1;
+}
+
+.details-btn {
+  margin-top: 10px;
+  padding: 8px 15px;
+  border: none;
+  background-color: #ff9800;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.details-btn:hover {
+  background-color: #e68900;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.pagination button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #ff9800;
+  color: white;
+  font-weight: bold;
+}
+
+.pagination button:hover {
+  background-color: #e68900;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+/* Categories */
+.book-categories {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.book-categories button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  background-color: #ff9800; /* Orange background */
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.book-categories button:hover {
+  background-color: #e68900;
+}
+
+.book-categories button.active {
+  background-color: #ff6f00; /* Slightly darker for active category */
+}
+.book-details-container {
+  max-width: 900px; /* medium width */
+  margin: 40px auto; /* center horizontally with some top/bottom spacing */
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.book-details-container img {
+  flex: 1 1 250px; /* image takes up space but not too big */
+  max-width: 300px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.book-details-info {
+  flex: 2 1 400px; /* info section takes remaining space */
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.book-details-info h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.book-details-info p {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #333;
+}
+
+.book-details-info .book-price {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #ff9800;
+}
+
+.book-details-info .book-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.book-details-info .book-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.book-details-info .add-cart-btn {
+  background-color: #ff9800;
+  color: white;
+}
+
+.book-details-info .add-cart-btn:hover {
+  background-color: #e68900;
+}
+
+.book-details-info .wishlist-btn {
+  background-color: #f1f1f1;
+  color: #ff9800;
+}
+
+.book-details-info .wishlist-btn:hover {
+  background-color: #ffecd5;
+}

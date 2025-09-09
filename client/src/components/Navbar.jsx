@@ -98,7 +98,7 @@ function Navbar() {
 
         {/* Right Auth Links */}
         <div className="main-right">
-          <Link to="/blogs">Blogs</Link>
+          <Link to="/Books">Books</Link> <Link to="/blogs">Blogs</Link> 
           {!user ? (
             <>
               <Link to="/login" className="auth-link">Login</Link>

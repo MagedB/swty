@@ -1,13 +1,13 @@
 .books-container {
   padding: 20px;
-  background-color: #f9f5f2; /* soft background */
+  background-color: #cacaca; /* soft background */
   font-family: Arial, sans-serif;
 }
 
 .books-container h1 {
   font-size: 2.5rem;
   font-weight: bold;
-  color: #ff9800;
+  color: #0c0c0c;
   text-align: center;
   margin-bottom: 20px;
 }
@@ -31,7 +31,7 @@
 .book-search-form button {
   padding: 12px 20px;
   border: none;
-  background-color: #ff9800;
+  background-color: #89a1ee;
   color: white;
   font-weight: bold;
   cursor: pointer;
@@ -39,7 +39,7 @@
 }
 
 .book-search-form button:hover {
-  background-color: #e68900;
+  background-color: #89a1ee;
 }
 
 /* Books Grid - professional style */
@@ -100,7 +100,7 @@
 }
 
 .book-rating {
-  color: #ff9800;
+  color: #ffd900;
   margin-bottom: 5px;
 }
 
@@ -123,7 +123,7 @@
 }
 
 .add-cart-btn {
-  background-color: #ff9800;
+  background-color: #89a1ee;
   color: white;
 }
 
@@ -192,13 +192,13 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  background-color: #ff9800;
+  background-color: #89a1ee;
   color: white;
   font-weight: bold;
 }
 
 .pagination button:hover {
-  background-color: #e68900;
+  background-color: #89a1ee;
 }
 
 .pagination button:disabled {
@@ -218,7 +218,7 @@
   padding: 8px 16px;
   border: none;
   border-radius: 20px;
-  background-color: #ff9800; /* Orange background */
+  background-color: #89a1ee; /* Orange background */
   color: white;
   font-weight: bold;
   cursor: pointer;
@@ -226,11 +226,11 @@
 }
 
 .book-categories button:hover {
-  background-color: #e68900;
+  background-color: #4806fc;
 }
 
 .book-categories button.active {
-  background-color: #ff6f00; /* Slightly darker for active category */
+  background-color: #4806fc; /* Slightly darker for active category */
 }
 .book-details-container {
   max-width: 900px; /* medium width */

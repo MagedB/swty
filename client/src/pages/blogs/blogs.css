@@ -17,15 +17,15 @@
 }
 
 .category-title {
-  font-size: 1.8rem;
+  font-size: 2.5rem;
   font-weight: bold;
   margin-bottom: 8px;
   color: #333;
 }
 
 .category-description {
-  font-size: 0.95rem;
-  color: #666;
+  font-size: 1.3rem;
+  color: #9e2b2b;
   margin-bottom: 20px;
 }
 
@@ -36,7 +36,7 @@
   border: 1px solid #eee;
   border-radius: 12px;
   overflow: hidden;
-  background: #fff;
+  background: #949dee;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   text-decoration: none;
   color: inherit;
@@ -45,7 +45,7 @@
 
 .featured-blog:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
 }
 
 .featured-blog img {

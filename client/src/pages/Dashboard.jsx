@@ -41,6 +41,18 @@ export default function Dashboard() {
             </Link>
             <Link to="/dashboard/social-media" className="dashboard-btn">
               Social Media
+             </Link>
+            <Link to="/dashboard/manage-brands" className="dashboard-btn">
+              Manage Brands
+            </Link>
+            <Link to="/dashboard/add-brands" className="dashboard-btn">
+              Add Brands
+            </Link>
+            <Link to="/dashboard/manage-suppliers" className="dashboard-btn">
+              Manage Suppliers
+            </Link>
+            <Link to="/dashboard/add-supplier" className="dashboard-btn">
+              Add Supplier
             </Link>
             <Link to="/dashboard/manage-blogs" className="dashboard-btn">
               Manage Blogs
@@ -48,7 +60,6 @@ export default function Dashboard() {
              <Link to="/dashboard/add-blogs" className="dashboard-btn">
               Add Blogs
             </Link>
-
           </>
         )}
       </div>

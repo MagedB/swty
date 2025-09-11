@@ -4,6 +4,8 @@ import "../styles/Table.css"; // contains table + modal styles
 export default function ManageProducts() {
   const [products, setProducts] = useState([]);
   const [editProduct, setEditProduct] = useState(null);
+  const [brands, setBrands] = useState([]);
+  const [suppliers, setSuppliers] = useState([]);
 
   // ✅ category → subcategory map (same as AddProduct.jsx)
   const subCategories = {
@@ -47,6 +49,8 @@ export default function ManageProducts() {
 
   useEffect(() => {
     fetchProducts();
+    fetchBrands();
+    fetchSuppliers();
   }, []);
 
   const fetchProducts = async () => {
@@ -60,6 +64,34 @@ export default function ManageProducts() {
       setProducts(data);
     } catch (err) {
       console.error("Error fetching products:", err);
+    }
+  };
+
+  const fetchBrands = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/brands", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      const data = await res.json();
+      setBrands(data);
+    } catch (err) {
+      console.error("Error fetching brands:", err);
+    }
+  };
+
+  const fetchSuppliers = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/suppliers", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      const data = await res.json();
+      setSuppliers(data);
+    } catch (err) {
+      console.error("Error fetching suppliers:", err);
     }
   };
 
@@ -103,6 +135,8 @@ export default function ManageProducts() {
       formData.append("price", editProduct.price);
       formData.append("category", editProduct.category);
       formData.append("sub_category", editProduct.sub_category || "");
+      formData.append("brand_id", editProduct.brand_id || "");
+      formData.append("supplier_id", editProduct.supplier_id || "");
       if (editProduct.imageFile) {
         formData.append("image", editProduct.imageFile);
       }
@@ -134,6 +168,8 @@ export default function ManageProducts() {
             <th>Price ($)</th>
             <th>Category</th>
             <th>Sub Category</th>
+            <th>Brand</th>
+            <th>Supplier</th>
             <th>Image</th>
             <th>Created At</th>
             <th>Visible</th>
@@ -149,6 +185,8 @@ export default function ManageProducts() {
               <td>{p.price}</td>
               <td>{p.category}</td>
               <td>{p.sub_category || "—"}</td>
+              <td>{p.brand_name || "—"}</td>
+              <td>{p.supplier_name || "—"}</td>
               <td>
                 {p.image ? (
                   <img
@@ -269,6 +307,46 @@ export default function ManageProducts() {
                   {subCategories[editProduct.category]?.map((sub) => (
                     <option key={sub} value={sub}>
                       {sub}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Brand:</label>
+                <select
+                  value={editProduct.brand_id || ""}
+                  onChange={(e) =>
+                    setEditProduct({
+                      ...editProduct,
+                      brand_id: e.target.value,
+                    })
+                  }
+                >
+                  <option value="">-- Select Brand --</option>
+                  {brands.map((b) => (
+                    <option key={b.id} value={b.id}>
+                      {b.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Supplier:</label>
+                <select
+                  value={editProduct.supplier_id || ""}
+                  onChange={(e) =>
+                    setEditProduct({
+                      ...editProduct,
+                      supplier_id: e.target.value,
+                    })
+                  }
+                >
+                  <option value="">-- Select Supplier --</option>
+                  {suppliers.map((s) => (
+                    <option key={s.id} value={s.id}>
+                      {s.name}
                     </option>
                   ))}
                 </select>

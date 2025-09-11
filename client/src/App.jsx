@@ -51,8 +51,9 @@ import AutomotiveBlog from "./pages/blogs/automotiveblog";
 import Category from "./pages/blogs/Category";
 import BlogPost from "./pages/blogs/BlogPost";
 
-// Blog Pages
+// Books Page
 import Books from "./pages/Books.jsx";
+import BookDetails from "./pages/BookDetails";
 
 // Dashboard + Management Pages
 import Dashboard from "./pages/Dashboard";
@@ -65,7 +66,10 @@ import ManageFinance from "./pages/ManageFinance";
 import SocialMedia from "./pages/SocialMedia";
 import ManageBlogs from "./pages/ManageBlogs";
 import AddBlogs from "./pages/AddBlogs";
-import BookDetails from "./pages/BookDetails";
+import ManageSuppliers from "./pages/ManageSuppliers";
+import ManageBrands from "./pages/ManageBrands";
+import AddSupplier from "./pages/AddSupplier";
+import AddBrands from "./pages/AddBrands";
 
 function App() {
   const { user } = useAuth();
@@ -102,7 +106,7 @@ function App() {
         </Route>
 
         {/* Automotive hub and subpages */}
-        <Route path="/Automotive" element={<Automotive />}>
+        <Route path="/automotive" element={<Automotive />}>
           <Route path="AutoTools" element={<AutoTools />} />
           <Route path="CarsParts" element={<CarsParts />} />
           <Route path="MotorcycleParts" element={<MotorcycleParts />} />
@@ -114,7 +118,6 @@ function App() {
         <Route path="/woman-fashion" element={<WomanFashion />} />
         <Route path="/man-fashion" element={<ManFashion />} />
         <Route path="/kids" element={<Kids />} />
-        <Route path="/automotive" element={<Automotive />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/login" element={<Login />} />
@@ -203,6 +206,38 @@ function App() {
           element={
             <ProtectedRoute roles={["admin"]}>
               <SocialMedia />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/manage-brands"
+          element={
+            <ProtectedRoute roles={["admin"]}>
+              <ManageBrands />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/manage-suppliers"
+          element={
+            <ProtectedRoute roles={["admin"]}>
+              <ManageSuppliers />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/add-supplier"
+          element={
+            <ProtectedRoute roles={["admin"]}>
+              <AddSupplier />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/add-brands/"
+          element={
+            <ProtectedRoute roles={["admin"]}>
+              <AddBrands />
             </ProtectedRoute>
           }
         />

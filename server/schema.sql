@@ -1,9 +1,3 @@
--- Drop existing tables (for dev only)
-DROP TABLE IF EXISTS order_items;
-DROP TABLE IF EXISTS orders;
-DROP TABLE IF EXISTS products;
-DROP TABLE IF EXISTS users;
-
 -- =====================
 -- Users
 -- =====================
@@ -30,6 +24,7 @@ CREATE TABLE products (
   created_at TIMESTAMP DEFAULT NOW(),
   visible BOOLEAN DEFAULT TRUE,
   sub_category VARCHAR(100) NOT NULL DEFAULT ''
+  
 );
 
 -- =====================
@@ -68,3 +63,48 @@ CREATE TABLE blogs (
   image VARCHAR(255),
   created_at TIMESTAMP DEFAULT NOW()
 );
+
+-- =====================
+-- Supplier_brands
+-- =====================
+
+CREATE TABLE supplier_brands (
+  supplier_id INT REFERENCES suppliers(id) ON DELETE CASCADE,
+  brand_id INT REFERENCES brands(id) ON DELETE CASCADE,
+  PRIMARY KEY (supplier_id, brand_id)
+);
+
+-- =====================
+-- Brands
+-- =====================    
+
+CREATE TABLE brands (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) UNIQUE NOT NULL,
+  logo_url TEXT,
+  description TEXT,
+  website TEXT
+);
+
+-- =====================
+-- Suppliers
+-- =====================
+
+CREATE TABLE suppliers (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(150) NOT NULL,           -- Company name
+  contact_person VARCHAR(100),          -- Person you deal with
+  email VARCHAR(150),
+  phone VARCHAR(50),
+  address TEXT,
+  city VARCHAR(100),
+  country VARCHAR(100),
+  commercial_register VARCHAR(100),     -- Official CR number
+  tax_id VARCHAR(100),                  -- VAT / tax number
+  bank_account VARCHAR(150),            -- IBAN / account for payments
+  payment_terms VARCHAR(100),           -- e.g. "Net 30", "Prepaid 50%"
+  notes TEXT,                           -- internal notes for your staff
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+

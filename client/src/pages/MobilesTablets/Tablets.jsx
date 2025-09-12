@@ -49,7 +49,7 @@ export default function Tablets() {
 
       {/* Main Content */}
       <main className="main-content">
-        <h2>Mobiles Tablets</h2>
+        <h2>Tablets</h2>
         <p className="section-subtitle">Best Seller</p>
 
         {products.length === 0 ? (

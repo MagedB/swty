@@ -19,6 +19,28 @@ import Register from "./pages/Register";
 import Orders from "./pages/Orders";
 import SearchResults from "./pages/SearchResults";
 
+// WomanFashion Sub Pages
+import WFAccessoriesandPerfumes from "./pages/WomanFashion/AccessoriesandPerfumes";
+import WFBeautyandMakeup from "./pages/WomanFashion/BeautyandMakeup";
+import WFClothes from "./pages/WomanFashion/Clothes";
+import WFGoldandjewelry from "./pages/WomanFashion/Goldandjewelry";
+import WFShoesandBags from "./pages/WomanFashion/ShoesandBags";
+
+// ManFashion Sub Pages
+import MFAccessoriesandPerfumes from "./pages/ManFashion/AccessoriesandPerfumes";
+import MFFitnesandGymAccessories from "./pages/ManFashion/FitnesandGymAccessories";
+import MFClothes from "./pages/ManFashion/Clothes";
+import MFHomeWear from "./pages/ManFashion/HomeWear";
+import MFShoesandBags from "./pages/ManFashion/ShoesandBags";
+
+
+// kids Sub Pages
+import Babys from "./pages/kids/babys";
+import BoysFashion from "./pages/kids/Boysfashion";
+import GirlsFashion from "./pages/kids/GirlsFashion";
+import KidsSchool from "./pages/kids/KidsSchool";
+import Toys from "./pages/kids/Toys";
+
 // SmartDevices Sub Pages
 import Cameras from "./pages/SmartDevices/Cameras";
 import PcandLaptops from "./pages/SmartDevices/PcandLaptops";
@@ -114,10 +136,32 @@ function App() {
           <Route path="WheelsandBattery" element={<WheelsandBattery />} />
         </Route>
 
-        {/* Other main pages */}
+        {/* WomanFashion hub and subpages */}
         <Route path="/woman-fashion" element={<WomanFashion />} />
+        <Route path="/womanfashion/accessoriesandperfumes" element={<WFAccessoriesandPerfumes />} />
+        <Route path="/womanfashion/beautyandmakeup" element={<WFBeautyandMakeup />} />
+        <Route path="/womanfashion/clothes" element={<WFClothes />} />
+        <Route path="/womanfashion/goldandjewelry" element={<WFGoldandjewelry />} />
+        <Route path="/womanfashion/shoesandbags" element={<WFShoesandBags />} />
+
+        {/* ManFashion hub and subpages */}
         <Route path="/man-fashion" element={<ManFashion />} />
+        <Route path="/manfashion/accessoriesandperfumes" element={<MFAccessoriesandPerfumes />} />
+        <Route path="/manfashion/fitnesandgymaccessories" element={<MFFitnesandGymAccessories />} />
+        <Route path="/manfashion/clothes" element={<MFClothes />} />
+        <Route path="/manfashion/homewear" element={<MFHomeWear />} />
+        <Route path="/manfashion/shoesandbags" element={<MFShoesandBags />} />
+
+        {/* kids hub and subpages */}
         <Route path="/kids" element={<Kids />} />
+        <Route path="/kids/babys" element={<Babys />} />
+        <Route path="/kids/boysfashion" element={<BoysFashion />} />
+        <Route path="/kids/girlsfashion" element={<GirlsFashion />} />
+        <Route path="/kids/kidsschool" element={<KidsSchool />} />
+        <Route path="/kids/toys" element={<Toys />} />  
+
+
+        {/* Other main pages */}
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/login" element={<Login />} />
@@ -167,8 +211,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
-        {/* Admin-only dashboard pages */}
         <Route
           path="/dashboard/manage-accounts"
           element={

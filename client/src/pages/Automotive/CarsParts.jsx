@@ -49,7 +49,7 @@ export default function CarsParts() {
 
       {/* Main Content */}
       <main className="main-content">
-        <h2>Bullet Cars Parts</h2>
+        <h2>Cars Parts</h2>
         <p className="section-subtitle">Best Seller</p>
 
         {products.length === 0 ? (

@@ -107,7 +107,7 @@ export default function Home() {
             />
             <div className="item-details">
               <h3>{item.name}</h3>
-              <p>${Number(item.price).toFixed(2)}</p>
+              <p>EGP{Number(item.price).toFixed(2)}</p>
               <Link
                 to={`/${categoryRoutes[category]}`}
                 className="view-more-link"

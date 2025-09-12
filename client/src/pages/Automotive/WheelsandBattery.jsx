@@ -49,7 +49,7 @@ export default function WheelsandBattery() {
 
       {/* Main Content */}
       <main className="main-content">
-        <h2>Bullet Wheels and Battery</h2>
+        <h2>Wheels and Battery</h2>
         <p className="section-subtitle">Best Seller</p>
 
         {products.length === 0 ? (

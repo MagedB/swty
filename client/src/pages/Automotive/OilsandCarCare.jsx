@@ -49,7 +49,7 @@ export default function OilsandCarCare() {
 
       {/* Main Content */}
       <main className="main-content">
-        <h2>Bullet Oils and CarCare</h2>
+        <h2>Oils and CarCare</h2>
         <p className="section-subtitle">Best Seller</p>
 
         {products.length === 0 ? (

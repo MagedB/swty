@@ -79,7 +79,7 @@ export default function Checkout() {
             <div key={item.id} className="checkout-item">
               <img src={`http://localhost:5000/uploads/${item.image}`} alt={item.name} width="80" />
               <p>
-                {item.name} - ${Number(item.price).toFixed(2)} x{" "}
+                {item.name} - EGP{Number(item.price).toFixed(2)} x{" "}
                 {item.quantity || 1}
               </p>
             </div>
@@ -98,7 +98,7 @@ export default function Checkout() {
             </label>
 
             <label>
-              Delivery Fee ($):
+              Delivery Fee (EGP):
               <input
                 type="number"
                 value={deliveryFee}
@@ -109,10 +109,10 @@ export default function Checkout() {
           </div>
 
           <div className="checkout-totals">
-            <p>Items Total: ${itemsTotal.toFixed(2)}</p>
-            <p>Delivery Fee: ${Number(deliveryFee).toFixed(2)}</p>
+            <p>Items Total: EGP{itemsTotal.toFixed(2)}</p>
+            <p>Delivery Fee: EGP{Number(deliveryFee).toFixed(2)}</p>
             <p>
-              <strong>Total: ${totalPrice}</strong>
+              <strong>Total: EGP{totalPrice}</strong>
             </p>
           </div>
 

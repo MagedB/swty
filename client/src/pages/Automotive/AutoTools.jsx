@@ -49,7 +49,7 @@ export default function AutoTools() {
 
       {/* Main Content */}
       <main className="main-content">
-        <h2>Bullet AutoTools</h2>
+        <h2>AutoTools</h2>
         <p className="section-subtitle">Best Seller</p>
 
         {products.length === 0 ? (

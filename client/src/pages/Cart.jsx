@@ -68,7 +68,7 @@ export default function Cart() {
                 />
                 <div className="cart-details">
                   <h3>{item.name}</h3>
-                  <p className="cart-price">${Number(item.price).toFixed(2)}</p>
+                  <p className="cart-price">EGP{Number(item.price).toFixed(2)}</p>
 
                   <div className="cart-quantity">
                     <button onClick={() => changeQuantity(item.id, -1)}>-</button>
@@ -88,7 +88,7 @@ export default function Cart() {
           </div>
 
           <div className="cart-summary">
-            <h2>Total: ${totalPrice.toFixed(2)}</h2>
+            <h2>Total: EGP{totalPrice.toFixed(2)}</h2>
             <button
               className="cart-checkout"
               onClick={() => navigate("/checkout")}
